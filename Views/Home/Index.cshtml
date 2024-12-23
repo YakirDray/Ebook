@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "דף הבית";
+}
+
+<div class="home-container mx-auto px-4" dir="rtl">
+    <!-- Hero Section -->
+    <section class="hero text-center bg-blue-500 text-white py-20">
+        <h1 class="text-4xl font-bold">ברוכים הבאים לספרייה הדיגיטלית</h1>
+        <p class="mt-4 text-xl">גלו אלפי ספרים דיגיטליים, השאילו או רכשו בקלות</p>
+        <div class="mt-8">
+            <a href="@Url.Action("Index", "Books")" class="btn-primary bg-red-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-600 transition duration-300">עיון בספרים</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features grid grid-cols-3 gap-8 my-20">
+        <div class="feature-card bg-gray-100 p-4 text-center">
+            <i class="fas fa-book fa-3x"></i>
+            <h3 class="mt-4 font-bold">מגוון ספרים</h3>
+            <p>אלפי ספרים במגוון ז'אנרים</p>
+        </div>
+        <div class="feature-card bg-gray-100 p-4 text-center">
+            <i class="fas fa-mobile-alt fa-3x"></i>
+            <h3 class="mt-4 font-bold">קריאה בכל מקום</h3>
+            <p>גישה מכל מכשיר</p>
+        </div>
+        <div class="feature-card bg-gray-100 p-4 text-center">
+            <i class="fas fa-shekel-sign fa-3x"></i>
+            <h3 class="mt-4 font-bold">מחירים נוחים</h3>
+            <p>אפשרויות השאלה ורכישה</p>
+        </div>
+    </section>
+
+    <!-- Quick Links -->
+    <section class="quick-links text-center my-20">
+        <h2 class="text-3xl font-bold">קישורים מהירים</h2>
+        <div class="links-grid grid grid-cols-4 gap-4 mt-8">
+            <a href="@Url.Action("New", "Books")" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">ספרים חדשים</a>
+            <a href="@Url.Action("Popular", "Books")" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">הפופולריים ביותר</a>
+            <a href="@Url.Action("Genres", "Books")" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">ז'אנרים</a>
+            <a href="@Url.Action("Index", "Support")" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">תמיכה</a>
+        </div>
+    </section>
+</div>

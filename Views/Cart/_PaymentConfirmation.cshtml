@@ -1,0 +1,47 @@
+@model PaymentConfirmationViewModel
+
+<div class="payment-confirmation">
+    <h1>תודה על הרכישה!</h1>
+    <p>סכום: ₪@Model.Amount</p>
+    <p>מספר עסקה: @Model.TransactionId</p>
+    <p>תאריך רכישה: @Model.PurchaseDate.ToString("dd/MM/yyyy")</p>
+
+    <h2>פריטים שנרכשו:</h2>
+    <ul>
+        @foreach (var item in Model.PurchasedItems)
+        {
+            <li>@item.Title - ₪@item.Price</li>
+        }
+    </ul>
+</div>
+
+<style>
+.payment-confirmation {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.payment-confirmation h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.payment-confirmation p {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.payment-confirmation ul {
+    list-style: none;
+    padding: 0;
+}
+
+.payment-confirmation li {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+</style>

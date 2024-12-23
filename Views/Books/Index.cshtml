@@ -1,0 +1,50 @@
+@model BooksIndexViewModel
+
+<div class="library-container" dir="rtl">
+    <h1 class="page-title">ספרייה דיגיטלית</h1>
+
+    <!-- Search and Filter -->
+    <div class="search-section">
+        <form method="get" class="search-form">
+            <input type="text" name="searchString" value="@Model.SearchString" 
+                   class="search-input" placeholder="חיפוש ספרים..." />
+            <select name="genre" class="genre-select">
+                <option value="">כל הז'אנרים</option>
+                @foreach (var genre in Model.Genres)
+                {
+                    <option value="@genre" selected="@(genre == Model.SelectedGenre)">
+                        @genre
+                    </option>
+                }
+            </select>
+            <button type="submit" class="search-button">חיפוש</button>
+        </form>
+    </div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @foreach (var book in Model.Books)
+        {
+            <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                <div class="bg-cover bg-center h-56 p-4" style="background-image: url('@book.CoverImageUrl')">
+                    <img src="@book.CoverImageUrl" alt="Cover of @book.Title" class="w-full h-full object-cover opacity-0">
+                </div>
+                <div class="p-4">
+                    <h2 class="mt-2 mb-2 font-bold">@book.Title</h2>
+                    <p class="text-sm text-gray-600">@book.Author</p>
+                    <p class="text-sm text-gray-600">@book.Genre</p>
+                </div>
+                <div class="p-4 border-t border-gray-100">
+                    <div class="flex justify-between">
+                        <span>השאלה: ₪@book.BorrowPrice</span>
+                        <span>רכישה: ₪@book.BuyPrice</span>
+                    </div>
+                </div>
+                <div class="p-4 border-t border-gray-100 text-center">
+                    <a href="@Url.Action("Details", new { id = book.Id })" class="text-lg text-blue-500 hover:text-blue-600">
+                        פרטים נוספים
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

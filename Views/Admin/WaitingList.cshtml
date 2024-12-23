@@ -1,0 +1,100 @@
+@model IEnumerable<MyEBookLibrary.ViewModels.WaitingListManagementViewModel>
+
+<div class="container mx-auto px-4 py-12">
+    <div class="text-center mb-8">
+        <h1 class="text-4xl font-extrabold text-indigo-700">📚 ניהול רשימות המתנה</h1>
+        <p class="text-lg text-gray-600 mt-3">
+            סה"כ משתמשים ממתינים:
+            <span class="font-semibold">@Model.Sum(w => w.WaitingUsers.Count)</span>
+        </p>
+    </div>
+
+    @foreach (var book in Model)
+    {
+        <div class="bg-white rounded-xl shadow-lg mb-8">
+            <div class="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl font-semibold text-indigo-800">@book.BookTitle</h2>
+                    <span class="bg-indigo-100 text-indigo-700 text-sm font-medium px-4 py-1 rounded-full">
+                        @book.WaitingUsers.Count ממתינים
+                    </span>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200 text-right">
+                    <thead class="bg-indigo-100">
+                        <tr>
+                            <th class="px-6 py-4">#</th>
+                            <th class="px-6 py-4">שם משתמש</th>
+                            <th class="px-6 py-4">תאריך הצטרפות</th>
+                            <th class="px-6 py-4">פורמט</th>
+                            <th class="px-6 py-4">סטטוס</th>
+                            <th class="px-6 py-4">פעולות</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @for (int i = 0; i < book.WaitingUsers.Count; i++)
+                        {
+                            var user = book.WaitingUsers[i];
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4">@(@i + 1)</td>
+                                <td class="px-6 py-4">@user.UserName</td>
+                                <td class="px-6 py-4">@user.JoinDate.ToString("dd/MM/yyyy")</td>
+                                <td class="px-6 py-4">@user.Format</td>
+                                <td class="px-6 py-4">
+                                    @if (user.IsNotified)
+                                    {
+                                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full">
+                                            נשלחה התראה
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full">
+                                            ממתין
+                                        </span>
+                                    }
+                                </td>
+                                <td class="px-6 py-4 space-x-4">
+                                    @if (!user.IsNotified)
+                                    {
+                                        <button onclick="sendNotification(@book.BookId, '@user.UserId')"
+                                                class="bg-blue-500 text-white px-3 py-1 rounded">
+                                            התראה
+                                        </button>
+                                    }
+                                    <button onclick="confirmRemoveFromList(@book.BookId, '@user.UserId')"
+                                            class="bg-red-500 text-white px-3 py-1 rounded">
+                                        הסר
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    function sendNotification(bookId, userId) {
+        fetch('/Admin/NotifyWaitingUser', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ bookId, userId })
+        }).then(() => alert('נשלחה התראה בהצלחה!'));
+    }
+
+    function confirmRemoveFromList(bookId, userId) {
+        if (confirm('האם אתה בטוח?')) {
+            fetch('/Admin/RemoveFromWaitingList', {
+                method: 'POST',
+                body: JSON.stringify({ bookId, userId })
+            }).then(() => location.reload());
+        }
+    }
+</script>

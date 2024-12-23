@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Project">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Sdk">
+          <xs:complexType>
+            <xs:attribute name="Name" use="required" />
+            <xs:attribute name="Version" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="PropertyGroup">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Name" type="xs:string" />
+              <xs:element name="ProjectGuid" type="xs:string" />
+              <xs:element name="DSP" type="xs:string" />
+              <xs:element name="ModelCollation" type="xs:string" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Target">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Delete">
+                <xs:complexType>
+                  <xs:attribute name="Files" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="Name" use="required" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="DefaultTargets" use="required" />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

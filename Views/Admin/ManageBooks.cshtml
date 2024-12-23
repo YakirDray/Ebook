@@ -1,0 +1,177 @@
+@model IEnumerable<Book>
+
+<div class="container mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold">ניהול ספרים</h1>
+        <a href="@Url.Action("CreateBook", "Admin")"
+            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
+            <i class="fas fa-plus ml-2"></i>הוסף ספר חדש
+        </a>
+    </div>
+
+    <!-- סינון וחיפוש -->
+    <div class="bg-white rounded-lg shadow p-6 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">חיפוש</label>
+                <input type="text" id="searchInput" class="form-input w-full rounded-lg border-gray-300"
+                    placeholder="חיפוש לפי כותרת או מחבר">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">סינון לפי ז'אנר</label>
+                <select id="genreFilter" class="form-select w-full rounded-lg border-gray-300">
+                    <option value="">כל הז'אנרים</option>
+                    <option value="ספרות יפה">ספרות יפה</option>
+                    <option value="ספרות עיון">ספרות עיון</option>
+                    <option value="ספרי ילדים">ספרי ילדים</option>
+                    <option value="ספרי לימוד">ספרי לימוד</option>
+                    <option value="מדע בדיוני">מדע בדיוני</option>
+                    <option value="מתח">מתח</option>
+                    <option value="רומן">רומן</option>
+                    <option value="ביוגרפיה">ביוגרפיה</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">מיין לפי</label>
+                <select id="sortBy" class="form-select w-full rounded-lg border-gray-300">
+                    <option value="price_asc">מחיר - מהנמוך לגבוה</option>
+                    <option value="price_desc">מחיר - מהגבוה לנמוך</option>
+                    <option value="copies_asc">עותקים זמינים - מהפחות ליותר</option>
+                    <option value="copies_desc">עותקים זמינים - מהיותר לפחות</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- טבלת ספרים -->
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">כותרת
+                    </th>
+                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">מחבר
+                    </th>
+                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">ז'אנר
+                    </th>
+                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">מחיר
+                    </th>
+                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">עותקים
+                    </th>
+                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">פעולות
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                @foreach (var book in Model)
+                {
+                    <tr>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center">
+                                @if (!string.IsNullOrEmpty(book.CoverImageUrl))
+                                {
+                                    <img src="@book.CoverImageUrl" class="h-10 w-8 object-cover rounded ml-2" />
+                                }
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">@book.Title</div>
+                                    @if (book.OriginalPrice.HasValue)
+                                    {
+                                        <span class="text-xs text-red-500">במבצע!</span>
+                                    }
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            @book.Author
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            @book.Genre
+                        </td>
+
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            @if (book.OriginalPrice.HasValue)
+                            {
+                                <div class="line-through">₪@book.OriginalPrice</div>
+                                <div class="text-red-600">₪@book.BuyPrice</div>
+                            }
+                            else
+                            {
+                                <div>₪@book.BuyPrice</div>
+                            }
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span
+                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                       @(book.AvailableCopies > 0 ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800")">
+                                @book.AvailableCopies
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <div class="flex space-x-2">
+                                <a href="@Url.Action("EditBook", new { id = book.Id })"
+                                    class="text-indigo-600 hover:text-indigo-900">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button onclick="deleteBook(@book.Id)" class="text-red-600 hover:text-red-900">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                                <button onclick="openDiscountModal(@book.Id)" class="text-yellow-600 hover:text-yellow-900">
+                                    <i class="fas fa-percent"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        // פונקציית מחיקת ספר
+        function deleteBook(id) {
+            if (confirm('האם אתה בטוח שברצונך למחוק ספר זה?')) {
+                $.post('@Url.Action("DeleteBook")', { id: id })
+                    .done(function () {
+                        location.reload(); // רענון הדף לאחר מחיקה
+                    })
+                    .fail(function () {
+                        alert('אירעה שגיאה במחיקת הספר');
+                    });
+            }
+        }
+$(document).ready(function() {
+    $('#sortBy').change(function() {
+        sortTable();
+    });
+
+    function sortTable() {
+        var sortBy = $('#sortBy').val();
+        var sortIndex = sortBy.includes("price") ? 3 : 4; // מיקום העמודה של מחיר או עותקים
+        var isAscending = sortBy.includes("asc");
+
+        var rows = $('tbody tr').get();
+        rows.sort(function(a, b) {
+            var valA = $(a).children('td').eq(sortIndex).text();
+            var valB = $(b).children('td').eq(sortIndex).text();
+            
+            // Convert to numbers if numeric
+            valA = $.isNumeric(valA) ? +valA : valA;
+            valB = $.isNumeric(valB) ? +valB : valB;
+
+            if (isAscending) {
+                return valA < valB ? -1 : valA > valB ? 1 : 0;
+            } else {
+                return valA > valB ? -1 : valA < valB ? 1 : 0;
+            }
+        });
+
+        $.each(rows, function(index, row) {
+            $('table').children('tbody').append(row);
+        });
+    }
+});
+
+    </script>
+}

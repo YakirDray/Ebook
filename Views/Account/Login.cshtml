@@ -1,0 +1,61 @@
+<!-- Views/Account/Login.cshtml -->
+@model MyEBookLibrary.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "כניסה למערכת";
+    Layout = "_LoginLayout"; // נשתמש בתבנית מיוחדת לדף ההתחברות
+}
+
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-indigo-600">
+    <div class="max-w-md w-full bg-white rounded-lg shadow-2xl overflow-hidden">
+        <div class="px-8 py-6">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-800">ספרייה דיגיטלית</h1>
+                <p class="text-gray-600 mt-2">ברוכים הבאים! אנא התחברו למערכת</p>
+            </div>
+
+            <form asp-action="Login" method="post" class="space-y-6">
+                <div asp-validation-summary="ModelOnly" class="text-red-500 text-sm text-center mb-4"></div>
+
+                <div>
+                    <label asp-for="UserName" class="block text-sm font-medium text-gray-700">שם משתמש</label>
+                    <div class="mt-1">
+                        <input asp-for="UserName" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+                        <span asp-validation-for="UserName" class="text-red-500 text-xs mt-1"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label asp-for="Password" class="block text-sm font-medium text-gray-700">סיסמה</label>
+                    <div class="mt-1">
+                        <input asp-for="Password" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+                        <span asp-validation-for="Password" class="text-red-500 text-xs mt-1"></span>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input asp-for="RememberMe" type="checkbox" 
+                               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
+                        <label asp-for="RememberMe" class="mr-2 block text-sm text-gray-700">זכור אותי</label>
+                    </div>
+                </div>
+
+                <div>
+                    <button type="submit" 
+                            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        התחבר
+                    </button>
+                </div>
+            </form>
+
+            <div class="mt-6 text-center">
+                <a asp-action="Register" class="text-sm text-blue-600 hover:text-blue-500">
+                    אין לך חשבון? הירשם עכשיו
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

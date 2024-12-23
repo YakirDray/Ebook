@@ -1,0 +1,73 @@
+<!-- Views/Cart/Index.cshtml -->
+@model ShoppingCart
+
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8">עגלת קניות</h1>
+
+    @if (!Model.Items.Any())
+    {
+        <div class="bg-white rounded-lg shadow p-6 text-center">
+            <p class="text-gray-600 mb-4">העגלה שלך ריקה</p>
+            <a href="@Url.Action("Index", "Books")" 
+               class="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+                המשך בקניות
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- Cart Items -->
+            <div class="md:col-span-2">
+                <div class="space-y-4">
+                    @foreach (var item in Model.Items)
+                    {
+                        <div class="bg-white rounded-lg shadow p-4 flex items-center">
+                            <img src="@item.Book.CoverImageUrl" alt="@item.Title" 
+                                 class="w-24 h-32 object-cover rounded" />
+                            
+                            <div class="flex-grow mr-4">
+                                <h3 class="font-semibold">@item.Title</h3>
+                                <p class="text-gray-600">@(item.IsBorrow ? "השאלה" : "רכישה")</p>
+                                <p class="text-gray-600">פורמט: @item.Format</p>
+                                <p class="text-blue-600 font-semibold">₪@item.Price</p>
+                            </div>
+
+                            <form asp-action="RemoveFromCart" method="post" class="mr-4">
+                                <input type="hidden" name="bookId" value="@item.BookId" />
+                                <button type="submit" 
+                                        class="text-red-600 hover:text-red-800">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="md:col-span-1">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-xl font-semibold mb-4">סיכום הזמנה</h2>
+                    
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between">
+                            <span>מספר פריטים:</span>
+                            <span>@Model.Items.Count</span>
+                        </div>
+                        <div class="flex justify-between font-semibold">
+                            <span>סה"כ לתשלום:</span>
+                            <span>₪@Model.Total</span>
+                        </div>
+                    </div>
+
+                    <a href="@Url.Action("Checkout")" 
+                       class="block w-full bg-green-600 text-white text-center py-3 rounded-lg hover:bg-green-700">
+                        המשך לתשלום
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
