@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\yakir\\New folder (2)\\MyEBookLibrary\\MyEBookLibrary.csproj": {}
+    "C:\\React native projects\\Ebook\\MyEBookLibrary.csproj": {}
   },
   "projects": {
-    "C:\\Users\\yakir\\New folder (2)\\MyEBookLibrary\\MyEBookLibrary.csproj": {
+    "C:\\React native projects\\Ebook\\MyEBookLibrary.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\yakir\\New folder (2)\\MyEBookLibrary\\MyEBookLibrary.csproj",
+        "projectUniqueName": "C:\\React native projects\\Ebook\\MyEBookLibrary.csproj",
         "projectName": "MyEBookLibrary",
-        "projectPath": "C:\\Users\\yakir\\New folder (2)\\MyEBookLibrary\\MyEBookLibrary.csproj",
+        "projectPath": "C:\\React native projects\\Ebook\\MyEBookLibrary.csproj",
         "packagesPath": "C:\\Users\\yakir\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\yakir\\New folder (2)\\MyEBookLibrary\\obj\\",
+        "outputPath": "C:\\React native projects\\Ebook\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
