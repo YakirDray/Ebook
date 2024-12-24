@@ -186,7 +186,6 @@ C:\React native projects\Ebook\bin\Debug\net8.0\Microsoft.IdentityModel.Protocol
 C:\React native projects\Ebook\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\React native projects\Ebook\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
 C:\React native projects\Ebook\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
-C:\React native projects\Ebook\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
 C:\React native projects\Ebook\bin\Debug\net8.0\Mono.TextTemplating.dll
 C:\React native projects\Ebook\bin\Debug\net8.0\System.CodeDom.dll
 C:\React native projects\Ebook\bin\Debug\net8.0\System.Composition.AttributedModel.dll
@@ -196,13 +195,10 @@ C:\React native projects\Ebook\bin\Debug\net8.0\System.Composition.Runtime.dll
 C:\React native projects\Ebook\bin\Debug\net8.0\System.Composition.TypedParts.dll
 C:\React native projects\Ebook\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
 C:\React native projects\Ebook\bin\Debug\net8.0\System.Diagnostics.PerformanceCounter.dll
-C:\React native projects\Ebook\bin\Debug\net8.0\System.Drawing.Common.dll
 C:\React native projects\Ebook\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
 C:\React native projects\Ebook\bin\Debug\net8.0\System.Memory.Data.dll
 C:\React native projects\Ebook\bin\Debug\net8.0\System.Runtime.Caching.dll
 C:\React native projects\Ebook\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
-C:\React native projects\Ebook\bin\Debug\net8.0\System.Security.Permissions.dll
-C:\React native projects\Ebook\bin\Debug\net8.0\System.Windows.Extensions.dll
 C:\React native projects\Ebook\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
 C:\React native projects\Ebook\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
 C:\React native projects\Ebook\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
@@ -261,13 +257,8 @@ C:\React native projects\Ebook\bin\Debug\net8.0\runtimes\win-arm\native\Microsof
 C:\React native projects\Ebook\bin\Debug\net8.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\React native projects\Ebook\bin\Debug\net8.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\React native projects\Ebook\bin\Debug\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
-C:\React native projects\Ebook\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
 C:\React native projects\Ebook\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Diagnostics.PerformanceCounter.dll
-C:\React native projects\Ebook\bin\Debug\net8.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
-C:\React native projects\Ebook\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 C:\React native projects\Ebook\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
-C:\React native projects\Ebook\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
-C:\React native projects\Ebook\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 C:\React native projects\Ebook\obj\Debug\net8.0\MyEBookLibrary.csproj.AssemblyReference.cache
 C:\React native projects\Ebook\obj\Debug\net8.0\MyEBookLibrary.GeneratedMSBuildEditorConfig.editorconfig
 C:\React native projects\Ebook\obj\Debug\net8.0\MyEBookLibrary.AssemblyInfoInputs.cache
@@ -293,3 +284,5 @@ C:\React native projects\Ebook\obj\Debug\net8.0\refint\MyEBookLibrary.dll
 C:\React native projects\Ebook\obj\Debug\net8.0\MyEBookLibrary.pdb
 C:\React native projects\Ebook\obj\Debug\net8.0\MyEBookLibrary.genruntimeconfig.cache
 C:\React native projects\Ebook\obj\Debug\net8.0\ref\MyEBookLibrary.dll
+C:\React native projects\Ebook\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\React native projects\Ebook\bin\Debug\net8.0\Stripe.net.dll

@@ -1,5 +1,8 @@
 @model MyEBookLibrary.ViewModels.Payment.CheckoutViewModel
 
+<!-- Add Stripe.js at the top -->
+<script src="https://js.stripe.com/v3/"></script>
+
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-4xl mx-auto">
         <h1 class="text-3xl font-bold mb-8">תשלום</h1>
@@ -18,15 +21,20 @@
                             <h3 class="font-semibold text-lg">@item.Title</h3>
                             <p class="text-gray-600">@(item.IsBorrow ? "השאלה" : "רכישה")</p>
                             <p class="text-gray-600">פורמט: @item.Format</p>
-                            <p class="text-blue-600 font-bold">₪@item.Price</p>
+                            <p class="text-blue-600 font-bold">₪@item.Subtotal</p>
                         </div>
                     </div>
                 }
             </div>
+
+            <div class="mt-6 text-right">
+                <p class="text-lg font-semibold">סה"כ פריטים: @Model.Items.Count</p>
+                <p class="text-xl font-bold text-blue-600">סה"כ לתשלום: ₪@Model.Total</p>
+            </div>
         </div>
 
         <!-- טופס תשלום -->
-        <form asp-action="ProcessPayment" method="post">
+        <form id="payment-form" asp-action="ProcessPayment" method="post">
             <div class="bg-white rounded-lg shadow-lg p-6">
                 <h2 class="text-xl font-bold mb-6">פרטי תשלום</h2>
                 
@@ -48,39 +56,17 @@
                     </div>
                 </div>
 
-                <!-- פרטי כרטיס אשראי -->
-                <div id="creditCardForm" class="space-y-4">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label asp-for="CardDetails.CardNumber" class="block text-sm font-medium text-gray-700"></label>
-                            <input asp-for="CardDetails.CardNumber" class="mt-1 block w-full rounded-md border-gray-300" />
-                            <span asp-validation-for="CardDetails.CardNumber" class="text-red-500"></span>
-                        </div>
-                        <div>
-                            <label asp-for="CardDetails.CardHolderName" class="block text-sm font-medium text-gray-700"></label>
-                            <input asp-for="CardDetails.CardHolderName" class="mt-1 block w-full rounded-md border-gray-300" />
-                            <span asp-validation-for="CardDetails.CardHolderName" class="text-red-500"></span>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-3 gap-4">
-                        <div>
-                            <label asp-for="CardDetails.ExpiryMonth" class="block text-sm font-medium text-gray-700"></label>
-                            <input asp-for="CardDetails.ExpiryMonth" class="mt-1 block w-full rounded-md border-gray-300" />
-                            <span asp-validation-for="CardDetails.ExpiryMonth" class="text-red-500"></span>
-                        </div>
-                        <div>
-                            <label asp-for="CardDetails.ExpiryYear" class="block text-sm font-medium text-gray-700"></label>
-                            <input asp-for="CardDetails.ExpiryYear" class="mt-1 block w-full rounded-md border-gray-300" />
-                            <span asp-validation-for="CardDetails.ExpiryYear" class="text-red-500"></span>
-                        </div>
-                        <div>
-                            <label asp-for="CardDetails.CVV" class="block text-sm font-medium text-gray-700"></label>
-                            <input asp-for="CardDetails.CVV" class="mt-1 block w-full rounded-md border-gray-300" />
-                            <span asp-validation-for="CardDetails.CVV" class="text-red-500"></span>
-                        </div>
+                <!-- Stripe Card Element -->
+                <div class="space-y-4">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">פרטי כרטיס אשראי</label>
+                        <div id="card-element" class="mt-1 block w-full rounded-md border-gray-300 p-3 border"></div>
+                        <div id="card-errors" role="alert" class="text-red-500 text-sm mt-2"></div>
                     </div>
                 </div>
+
+                <!-- Hidden field for Stripe token -->
+                <input type="hidden" id="stripe-token" asp-for="CardDetails.StripeToken" />
 
                 <div class="mt-8">
                     <button type="submit" class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700">
@@ -91,3 +77,71 @@
         </form>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Stripe
+            var stripe = Stripe('@ViewBag.StripePublicKey');
+            var elements = stripe.elements();
+
+            // Create card element
+            var card = elements.create('card', {
+                style: {
+                    base: {
+                        fontSize: '16px',
+                        color: '#32325d',
+                        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                        '::placeholder': {
+                            color: '#aab7c4'
+                        }
+                    },
+                    invalid: {
+                        color: '#dc3545',
+                        iconColor: '#dc3545'
+                    }
+                },
+                hidePostalCode: true // Since you're using ILS currency
+            });
+
+            // Mount card element
+            var cardElement = document.getElementById('card-element');
+            if (cardElement) {
+                card.mount('#card-element');
+            }
+
+            // Handle form submission
+            var form = document.getElementById('payment-form');
+            if (form) {
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+
+                    stripe.createToken(card).then(function(result) {
+                        if (result.error) {
+                            // Handle errors
+                            var errorElement = document.getElementById('card-errors');
+                            if (errorElement) {
+                                errorElement.textContent = result.error.message;
+                            }
+                        } else {
+                            // Set the token and submit
+                            var tokenInput = document.getElementById('stripe-token');
+                            if (tokenInput) {
+                                tokenInput.value = result.token.id;
+                                form.submit();
+                            }
+                        }
+                    });
+                });
+            }
+
+            // Handle real-time validation errors
+            card.addEventListener('change', function(event) {
+                var errorElement = document.getElementById('card-errors');
+                if (errorElement) {
+                    errorElement.textContent = event.error ? event.error.message : '';
+                }
+            });
+        });
+    </script>
+}

@@ -4,12 +4,17 @@ using MyEBookLibrary.Data;
 using MyEBookLibrary.Models;
 using MyEBookLibrary.Services;
 using MyEBookLibrary.Services.Interfaces;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Configure Stripe
+builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
 builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
 {
@@ -27,7 +32,6 @@ builder.Services.AddScoped<IEmailNotificationService, EmailNotificationService>(
 builder.Services.AddControllersWithViews();
 builder.Services.AddApplicationInsightsTelemetry();
 builder.Services.AddScoped<ICartService, CartService>();
-
 
 var app = builder.Build();
 
@@ -89,6 +93,10 @@ using (var scope = app.Services.CreateScope())
             {
                 Console.WriteLine($"User: {user.UserName} ({user.Email})");
             }
+
+            // Log Stripe configuration status
+            var logger = services.GetRequiredService<ILogger<Program>>();
+            logger.LogInformation($"Stripe API Key configured: {!string.IsNullOrEmpty(StripeConfiguration.ApiKey)}");
         }
     }
     catch (Exception ex)
@@ -97,8 +105,5 @@ using (var scope = app.Services.CreateScope())
         logger.LogError(ex, "An error occurred while initializing the database.");
     }
 }
-
-// Add global authorization policy
-//app.MapControllers().RequireAuthorization();
 
 app.Run();

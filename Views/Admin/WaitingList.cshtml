@@ -60,12 +60,12 @@
                                     @if (!user.IsNotified)
                                     {
                                         <button onclick="sendNotification(@book.BookId, '@user.UserId')"
-                                                class="bg-blue-500 text-white px-3 py-1 rounded">
+                                            class="bg-blue-500 text-white px-3 py-1 rounded">
                                             התראה
                                         </button>
                                     }
                                     <button onclick="confirmRemoveFromList(@book.BookId, '@user.UserId')"
-                                            class="bg-red-500 text-white px-3 py-1 rounded">
+                                        class="bg-red-500 text-white px-3 py-1 rounded">
                                         הסר
                                     </button>
                                 </td>

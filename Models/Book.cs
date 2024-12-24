@@ -9,7 +9,7 @@ namespace MyEBookLibrary.Models
         EPUB,
         MOBI,
         F2B,
-        Unknown 
+        Unknown
 
     }
     public class Book
@@ -34,6 +34,7 @@ namespace MyEBookLibrary.Models
         public List<UserBook> UserBooks { get; set; } = new List<UserBook>();
         public List<WaitingListItem> WaitingList { get; set; } = new List<WaitingListItem>();
         public decimal DiscountedPrice { get; private set; }
+        public bool IsAvailable { get; internal set; }
 
         public decimal GetCurrentPrice()
         {

@@ -8,7 +8,9 @@
         <h1 class="text-4xl font-bold">ברוכים הבאים לספרייה הדיגיטלית</h1>
         <p class="mt-4 text-xl">גלו אלפי ספרים דיגיטליים, השאילו או רכשו בקלות</p>
         <div class="mt-8">
-            <a href="@Url.Action("Index", "Books")" class="btn-primary bg-red-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-600 transition duration-300">עיון בספרים</a>
+            <a href="@Url.Action("Index", "Books")"
+                class="btn-primary bg-red-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-600 transition duration-300">עיון
+                בספרים</a>
         </div>
     </section>
 
@@ -35,10 +37,19 @@
     <section class="quick-links text-center my-20">
         <h2 class="text-3xl font-bold">קישורים מהירים</h2>
         <div class="links-grid grid grid-cols-4 gap-4 mt-8">
-            <a href="@Url.Action("New", "Books")" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">ספרים חדשים</a>
-            <a href="@Url.Action("Popular", "Books")" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">הפופולריים ביותר</a>
-            <a href="@Url.Action("Genres", "Books")" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">ז'אנרים</a>
-            <a href="@Url.Action("Index", "Support")" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">תמיכה</a>
+            <a href="@Url.Action("New", "Books")"
+                class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">ספרים
+                חדשים</a>
+            <a href="@Url.Action("Popular", "Books")"
+                class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">הפופולריים
+                ביותר</a>
+            <a href="@Url.Action("Genres", "Books")"
+                class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">ז'אנרים</a>
+            <a href="@Url.Action("Index", "Cart")"
+                class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300">
+                לעגלת הקניות
+            </a>
         </div>
     </section>
+
 </div>

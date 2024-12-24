@@ -12,9 +12,13 @@ namespace MyEBookLibrary.Services.Interfaces
         Task<bool> ProcessCartAsync(string userId, PaymentInfo paymentInfo);
         Task<IEnumerable<CartItem>> GetCartItemsAsync(string userId);
         Task<decimal> GetCartTotalAsync(string userId);
-            Task<ShoppingCart> GetCartAsync(string userId);  // Add this if it's used in your controller
-                Task<bool> CompleteOrderAsync(string userId);  // Example signature
+        Task<ShoppingCart> GetCartAsync(string userId);
+        Task<bool> CompleteOrderAsync(string userId);
 
-
+        // פונקציות נוספות
+        Task<bool> IsBookAvailableAsync(int bookId);
+        Task<bool> UpdateCartStatusAsync(string userId, CartStatus status);
+        Task<int> GetCartItemCountAsync(string userId);
+        Task<CartItem?> GetCartItemAsync(string userId, int bookId);
     }
 }

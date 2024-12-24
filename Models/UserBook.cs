@@ -17,7 +17,7 @@ namespace MyEBookLibrary.Models
         public virtual User User { get; set; } = null!;
         public virtual Book Book { get; set; } = null!;
     }
-     public class Transaction
+    public class Transaction
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
@@ -25,3 +25,4 @@ namespace MyEBookLibrary.Models
         // Add other properties here
     }
 }
+

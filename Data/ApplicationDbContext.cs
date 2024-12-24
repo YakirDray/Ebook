@@ -15,6 +15,11 @@ namespace MyEBookLibrary.Data
         public required DbSet<WaitingListItem> WaitingList { get; set; }
         public required DbSet<BookReview> BookReviews { get; set; }
         public required DbSet<ShoppingCart> ShoppingCarts { get; set; }
+        public required DbSet<Borrow> Borrows { get; set; }
+
+        public ApplicationDbContext() : this(new DbContextOptions<ApplicationDbContext>())
+        {
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -104,9 +109,6 @@ namespace MyEBookLibrary.Data
                 .Property(c => c.Price)
                 .HasColumnType("decimal(18, 2)");
 
-            modelBuilder.Entity<CartItem>()
-                .Property(c => c.Subtotal)
-                .HasColumnType("decimal(18, 2)");
 
             modelBuilder.Entity<Transaction>()
                 .Property(t => t.Amount)

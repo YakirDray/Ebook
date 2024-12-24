@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyEBookLibrary.Models;
 using MyEBookLibrary.Services.Interfaces;
 using MyEBookLibrary.ViewModels.Payment;
+using Stripe;
 
 namespace MyEBookLibrary.Controllers
 {
@@ -12,11 +13,13 @@ namespace MyEBookLibrary.Controllers
     {
         private readonly ICartService _cartService;
         private readonly UserManager<User> _userManager;
+        private readonly IConfiguration _configuration;
 
-        public CartController(ICartService cartService, UserManager<User> userManager)
+        public CartController(ICartService cartService, UserManager<User> userManager, IConfiguration configuration)
         {
             _cartService = cartService;
             _userManager = userManager;
+            _configuration = configuration;
         }
 
         public async Task<IActionResult> Index()
@@ -61,76 +64,51 @@ namespace MyEBookLibrary.Controllers
         }
 
         [HttpGet]
-public async Task<IActionResult> Checkout()
-{
-    var userId = _userManager.GetUserId(User);
-    if (string.IsNullOrEmpty(userId))
-        return RedirectToAction("Login", "Account");
+        public async Task<IActionResult> Checkout()
+        {
+            var userId = _userManager.GetUserId(User);
+            var cart = await _cartService.GetOrCreateCartAsync(userId!);
 
-    var cart = await _cartService.GetOrCreateCartAsync(userId);
-    if (!cart.Items.Any())
-        return RedirectToAction(nameof(Index));
+            var checkoutViewModel = new CheckoutViewModel
+            {
+                Items = cart.Items,
+                CardDetails = new CreditCardDetails(),
+                PaymentMethod = Models.PaymentMethod.CreditCard
+            };
 
-    var viewModel = new CheckoutViewModel
-    {
-        Items = cart.Items,
-        Total = cart.Total,
-        PaymentMethod = PaymentMethod.CreditCard,
-        CardDetails = new CreditCardDetails()
-    };
+            // Pass the Stripe public key to the view
+            ViewBag.StripePublicKey = _configuration["Stripe:PublishableKey"];
 
-    return View(viewModel);
-}
+            return View(checkoutViewModel);
+        }
 
-[HttpPost]
-public async Task<IActionResult> ProcessPayment(CheckoutViewModel model)
-{
-    var userId = _userManager.GetUserId(User);
-    if (userId == null)
-        return RedirectToAction("Login", "Account");
+        [HttpPost("checkout/test-payment")]
+        public async Task<IActionResult> TestPayment(string stripeToken, decimal amount)
+        {
+            try
+            {
+                var options = new ChargeCreateOptions
+                {
+                    Amount = (long)(amount * 100),
+                    Currency = "ils",
+                    Source = stripeToken,
+                    Description = "Test Payment"
+                };
 
-    if (!ModelState.IsValid)
-        return View("Checkout", model);
+                var service = new ChargeService();
+                var charge = await service.CreateAsync(options);
 
-    var cart = await _cartService.GetOrCreateCartAsync(userId);
-    if (!cart.Items.Any())
-        return RedirectToAction(nameof(Index));
+                if (charge.Status == "succeeded")
+                {
+                    return Json(new { success = true, message = "Payment Successful!" });
+                }
+                return Json(new { success = false, message = "Payment Failed!" });
+            }
+            catch (StripeException ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
 
-    var paymentInfo = new PaymentInfo
-    {
-        UserId = userId,
-        CardNumber = model.CardDetails.CardNumber,
-        ExpiryMonth = model.CardDetails.ExpiryMonth,
-        ExpiryYear = model.CardDetails.ExpiryYear,
-        CVV = model.CardDetails.CVV,
-        CardHolderName = model.CardDetails.CardHolderName,
-        Amount = cart.Total,
-        Method = model.PaymentMethod,
-        Currency = "ILS",
-        Status = PaymentStatus.Pending
-    };
-
-    var success = await _cartService.ProcessCartAsync(userId, paymentInfo);
-    if (!success)
-    {
-        ModelState.AddModelError("", "אירעה שגיאה בעיבוד התשלום");
-        return View("Checkout", model);
     }
-
-    // יצירת אישור תשלום
-    var confirmation = new PaymentConfirmationViewModel
-    {
-        Amount = cart.Total,
-        PurchasedItems = cart.Items.ToList(),
-        TransactionId = DateTime.Now.Ticks.ToString(),
-        PurchaseDate = DateTime.UtcNow
-    };
-
-    await _cartService.ClearCartAsync(userId);
-    
-    return View("PaymentConfirmation", confirmation);
-}
-       
-    }
-
 }
