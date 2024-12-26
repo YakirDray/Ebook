@@ -1,34 +1,36 @@
-// Controllers/BorrowController.cs
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyEBookLibrary.Data;
-using MyEBookLibrary.ViewModels;
+using MyEBookLibrary.Models;
 
 namespace MyEBookLibrary.Controllers
 {
-    public class BorrowController(ApplicationDbContext context) : Controller
+    public class BorrowController : Controller
     {
-        private readonly ApplicationDbContext _context = context;
+        private readonly ApplicationDbContext _context;
 
-        public async Task<IActionResult> ActiveBorrows()
+        public BorrowController(ApplicationDbContext context)
         {
-            var activeBorrows = await _context.Borrows
-                .Include(b => b.Book)
-                .Include(b => b.User)
-                .Where(b => b.ReturnDate == null || b.ReturnDate > DateTime.Now)
-                .Select(static b => new BorrowHistoryViewModel
-                {
-                    BorrowId = b.Id,
-                    UserName = b.UserName!,
-                    BookTitle = b.Book.Title,
-                    BorrowDate = b.BorrowDate,
-                    ReturnDate = b.ReturnDate,
-                    IsReturned = b.IsReturned,
-                    IsLate = b.ReturnDate < DateTime.Now && !b.IsReturned
-                }).ToListAsync();
-
-            return View("ActiveBorrows", activeBorrows);
+            _context = context;
         }
 
+        public async Task<IActionResult> Index()
+        {
+            var borrows = await _context.UserBooks
+                .Include(b => b.User)
+                .Include(b => b.Book)
+                .Where(b => b.IsBorrowed)
+                .Select(b => new
+                {
+                    UserName = b.User.UserName,
+                    BookTitle = b.Book.Title,
+                    BorrowDate = b.BorrowDate ?? DateTime.MinValue,
+                    ReturnDate = b.ReturnDate,
+                    IsReturned = b.IsReturned
+                })
+                .ToListAsync();
+
+            return View(borrows);
+        }
     }
 }

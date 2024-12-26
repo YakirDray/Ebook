@@ -4,21 +4,18 @@ namespace MyEBookLibrary.Services.Interfaces
 {
     public interface ICartService
     {
-        Task<ShoppingCart> GetOrCreateCartAsync(string userId);
-        Task<bool> AddToCartAsync(string userId, int bookId, bool isBorrow, BookFormat format);
-        Task<bool> UpdateQuantityAsync(string userId, int bookId, int quantity);
-        Task<bool> RemoveFromCartAsync(string userId, int bookId);
-        Task ClearCartAsync(string userId);
-        Task<bool> ProcessCartAsync(string userId, PaymentInfo paymentInfo);
-        Task<IEnumerable<CartItem>> GetCartItemsAsync(string userId);
-        Task<decimal> GetCartTotalAsync(string userId);
-        Task<ShoppingCart> GetCartAsync(string userId);
-        Task<bool> CompleteOrderAsync(string userId);
-
-        // פונקציות נוספות
-        Task<bool> IsBookAvailableAsync(int bookId);
-        Task<bool> UpdateCartStatusAsync(string userId, CartStatus status);
-        Task<int> GetCartItemCountAsync(string userId);
-        Task<CartItem?> GetCartItemAsync(string userId, int bookId);
+        Task<ShoppingCart> GetOrCreateCartAsync(int userId);
+        Task<bool> AddToCartAsync(int userId, int bookId, bool isBorrow, BookFormat format);
+        Task<bool> RemoveFromCartAsync(int userId, int bookId);
+        Task<bool> ProcessCartAsync(int userId, PaymentInfo paymentInfo);
+        Task ClearCartAsync(int userId);
+        Task<IEnumerable<CartItem>> GetCartItemsAsync(int userId);
+        Task<decimal> GetCartTotalAsync(int userId);
+        Task<bool> UpdateQuantityAsync(int userId, int bookId, int quantity);
+        Task<ShoppingCart> GetCartAsync(int userId);
+        Task<bool> CompleteOrderAsync(int userId);
+        Task<bool> UpdateCartStatusAsync(int userId, CartStatus status);
+        Task<int> GetCartItemCountAsync(int userId);
+        Task<CartItem?> GetCartItemAsync(int userId, int bookId);
     }
 }

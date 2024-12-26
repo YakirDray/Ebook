@@ -12,8 +12,8 @@ using MyEBookLibrary.Data;
 namespace MyEBookLibrary.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241223045536_AddIsAvailableToBooks")]
-    partial class AddIsAvailableToBooks
+    [Migration("20241226015926_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -294,39 +294,6 @@ namespace MyEBookLibrary.Migrations
                     b.ToTable("BookReviews");
                 });
 
-            modelBuilder.Entity("MyEBookLibrary.Models.Borrow", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("BorrowDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ReturnDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Borrows");
-                });
-
             modelBuilder.Entity("MyEBookLibrary.Models.CartItem", b =>
                 {
                     b.Property<int>("Id")
@@ -364,7 +331,7 @@ namespace MyEBookLibrary.Migrations
 
                     b.HasIndex("ShoppingCartId");
 
-                    b.ToTable("CartItem");
+                    b.ToTable("CartItems");
                 });
 
             modelBuilder.Entity("MyEBookLibrary.Models.ShoppingCart", b =>
@@ -384,11 +351,12 @@ namespace MyEBookLibrary.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("ShoppingCarts");
                 });
@@ -414,7 +382,7 @@ namespace MyEBookLibrary.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Transaction");
+                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("MyEBookLibrary.Models.User", b =>
@@ -520,7 +488,7 @@ namespace MyEBookLibrary.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserBooks");
+                    b.ToTable("UserBook");
                 });
 
             modelBuilder.Entity("MyEBookLibrary.Models.WaitingListItem", b =>
@@ -633,25 +601,6 @@ namespace MyEBookLibrary.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("MyEBookLibrary.Models.Borrow", b =>
-                {
-                    b.HasOne("MyEBookLibrary.Models.Book", "Book")
-                        .WithMany()
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MyEBookLibrary.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("MyEBookLibrary.Models.CartItem", b =>
                 {
                     b.HasOne("MyEBookLibrary.Models.Book", "Book")
@@ -662,9 +611,19 @@ namespace MyEBookLibrary.Migrations
 
                     b.HasOne("MyEBookLibrary.Models.ShoppingCart", null)
                         .WithMany("Items")
-                        .HasForeignKey("ShoppingCartId");
+                        .HasForeignKey("ShoppingCartId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Book");
+                });
+
+            modelBuilder.Entity("MyEBookLibrary.Models.ShoppingCart", b =>
+                {
+                    b.HasOne("MyEBookLibrary.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MyEBookLibrary.Models.Transaction", b =>

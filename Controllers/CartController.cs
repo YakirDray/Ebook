@@ -24,11 +24,7 @@ namespace MyEBookLibrary.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var userId = _userManager.GetUserId(User);
-            if (string.IsNullOrEmpty(userId))
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            var userId = int.Parse(_userManager.GetUserId(User)!);
             var cart = await _cartService.GetOrCreateCartAsync(userId);
             return View(cart);
         }
@@ -36,29 +32,27 @@ namespace MyEBookLibrary.Controllers
         [HttpPost]
         public async Task<IActionResult> AddToCart(int bookId, BookFormat format, bool isBorrow)
         {
-            var userId = _userManager.GetUserId(User);
-            if (string.IsNullOrEmpty(userId))
-            {
-                return Json(new { success = false, message = "User not authenticated" });
-            }
+            var userId = int.Parse(_userManager.GetUserId(User)!);
             var result = await _cartService.AddToCartAsync(userId, bookId, isBorrow, format);
+
             if (!result)
             {
                 return Json(new { success = false, message = "Failed to add the book to the cart" });
             }
 
             var cart = await _cartService.GetOrCreateCartAsync(userId);
-            return Json(new { success = true, message = "Book added to cart successfully", cartItemsCount = cart.Items.Count });
+            return Json(new
+            {
+                success = true,
+                message = "Book added to cart successfully",
+                cartItemsCount = cart.Items.Count
+            });
         }
 
         [HttpPost]
         public async Task<IActionResult> RemoveFromCart(int bookId)
         {
-            var userId = _userManager.GetUserId(User);
-            if (string.IsNullOrEmpty(userId))
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            var userId = int.Parse(_userManager.GetUserId(User)!);
             await _cartService.RemoveFromCartAsync(userId, bookId);
             return RedirectToAction(nameof(Index));
         }
@@ -66,19 +60,16 @@ namespace MyEBookLibrary.Controllers
         [HttpGet]
         public async Task<IActionResult> Checkout()
         {
-            var userId = _userManager.GetUserId(User);
-            var cart = await _cartService.GetOrCreateCartAsync(userId!);
+            var userId = int.Parse(_userManager.GetUserId(User)!);
+            var cart = await _cartService.GetOrCreateCartAsync(userId);
 
             var checkoutViewModel = new CheckoutViewModel
             {
                 Items = cart.Items,
                 CardDetails = new CreditCardDetails(),
-                PaymentMethod = Models.PaymentMethod.CreditCard
             };
 
-            // Pass the Stripe public key to the view
             ViewBag.StripePublicKey = _configuration["Stripe:PublishableKey"];
-
             return View(checkoutViewModel);
         }
 
@@ -109,6 +100,47 @@ namespace MyEBookLibrary.Controllers
                 return Json(new { success = false, message = ex.Message });
             }
         }
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Borrow(int id, BookFormat format)
+        {
+            if (!User.Identity!.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
 
+            var userIdString = _userManager.GetUserId(User);
+            if (userIdString == null)
+                return RedirectToAction("Login", "Account");
+
+            var userId = int.Parse(userIdString);
+            var result = await _cartService.AddToCartAsync(userId, id, true, format);
+
+            if (result)
+                return RedirectToAction("Checkout", "Cart");
+
+            TempData["Error"] = "לא ניתן להוסיף את הספר לעגלה";
+            return RedirectToAction("Details", new { id });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Purchase(int id, BookFormat format)
+        {
+            if (!User.Identity!.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
+            var userIdString = _userManager.GetUserId(User);
+            if (userIdString == null)
+                return RedirectToAction("Login", "Account");
+
+            var userId = int.Parse(userIdString);
+            var result = await _cartService.AddToCartAsync(userId, id, false, format);
+
+            if (result)
+                return RedirectToAction("Checkout", "Cart");
+
+            TempData["Error"] = "לא ניתן להוסיף את הספר לעגלה";
+            return RedirectToAction("Details", new { id });
+        }
     }
 }
+

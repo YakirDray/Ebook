@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using MyEBookLibrary.Controllers;
 using MyEBookLibrary.Data;
 using MyEBookLibrary.Models;
 using MyEBookLibrary.Services.Interfaces;
@@ -7,17 +6,20 @@ using Stripe;
 
 namespace MyEBookLibrary.Services
 {
-    public class CartService(ApplicationDbContext context) : ICartService
+    public class CartService : ICartService
     {
-        private readonly ApplicationDbContext _context = context;
+        private readonly ApplicationDbContext _context;
         private readonly ILogger<CartService>? _logger;
 
-        public CartService(ApplicationDbContext context, ILogger<CartService> logger) : this(context)
+        public CartService(ApplicationDbContext context, ILogger<CartService> logger)
         {
+            _context = context;
             _logger = logger;
         }
-        public async Task<ShoppingCart> GetOrCreateCartAsync(string userId)
+
+        public async Task<ShoppingCart> GetOrCreateCartAsync(int userId)
         {
+            var userIdString = userId.ToString();
             var cart = await _context.ShoppingCarts
                 .Include(c => c.Items)
                 .ThenInclude(i => i.Book)
@@ -39,7 +41,7 @@ namespace MyEBookLibrary.Services
             return cart;
         }
 
-        public async Task<bool> AddToCartAsync(string userId, int bookId, bool isBorrow, BookFormat format)
+        public async Task<bool> AddToCartAsync(int userId, int bookId, bool isBorrow, BookFormat format)
         {
             var book = await _context.Books.FindAsync(bookId);
             if (book == null)
@@ -69,7 +71,7 @@ namespace MyEBookLibrary.Services
             return true;
         }
 
-        public async Task<bool> RemoveFromCartAsync(string userId, int bookId)
+        public async Task<bool> RemoveFromCartAsync(int userId, int bookId)
         {
             var cart = await GetOrCreateCartAsync(userId);
             var item = cart.Items.FirstOrDefault(i => i.BookId == bookId);
@@ -82,21 +84,16 @@ namespace MyEBookLibrary.Services
             return false;
         }
 
-        public async Task ClearCartAsync(string userId)
+        public async Task ClearCartAsync(int userId)
         {
             var cart = await GetOrCreateCartAsync(userId);
             cart.Items.Clear();
             await _context.SaveChangesAsync();
         }
-        public async Task<bool> ProcessCartAsync(string userId, PaymentInfo paymentInfo)
-        {
-            if (string.IsNullOrEmpty(userId))
-            {
-                _logger?.LogWarning("ProcessCartAsync was called with null or empty userId");
-                return false;
-            }
 
-            if (string.IsNullOrEmpty(paymentInfo?.StripeToken))
+        public async Task<bool> ProcessCartAsync(int userId, PaymentInfo paymentInfo)
+        {
+            if (paymentInfo?.StripeToken == null)
             {
                 _logger?.LogWarning("Invalid payment info: Missing Stripe token");
                 return false;
@@ -104,9 +101,9 @@ namespace MyEBookLibrary.Services
 
             var cart = await GetOrCreateCartAsync(userId);
 
-            if (cart == null || !cart.Items.Any())
+            if (!cart.Items.Any())
             {
-                _logger?.LogWarning($"Empty or null cart for user {userId}");
+                _logger?.LogWarning($"Empty cart for user {userId}");
                 return false;
             }
 
@@ -141,7 +138,7 @@ namespace MyEBookLibrary.Services
             }
             catch (StripeException stripeEx)
             {
-                _logger?.LogError(stripeEx, $"Stripe payment processing failed for cart {cart.Id}. Error: {stripeEx.Message}");
+                _logger?.LogError(stripeEx, $"Stripe payment processing failed for cart {cart.Id}");
                 return false;
             }
             catch (Exception ex)
@@ -150,58 +147,72 @@ namespace MyEBookLibrary.Services
                 return false;
             }
         }
-        public async Task<IEnumerable<CartItem>> GetCartItemsAsync(string userId)
+
+        public async Task<IEnumerable<CartItem>> GetCartItemsAsync(int userId)
         {
             var cart = await GetOrCreateCartAsync(userId);
             return cart.Items;
         }
 
-        public async Task<decimal> GetCartTotalAsync(string userId)
+        public async Task<decimal> GetCartTotalAsync(int userId)
         {
             var cart = await GetOrCreateCartAsync(userId);
             return cart.Total;
         }
 
-        public Task<bool> UpdateQuantityAsync(string userId, int bookId, int quantity)
+        public async Task<bool> UpdateQuantityAsync(int userId, int bookId, int quantity)
         {
-            throw new NotImplementedException();
+            if (quantity < 0) return false;
+
+            var cart = await GetOrCreateCartAsync(userId);
+            var item = cart.Items.FirstOrDefault(i => i.BookId == bookId);
+            
+            if (item == null) return false;
+
+            if (quantity == 0)
+            {
+                return await RemoveFromCartAsync(userId, bookId);
+            }
+
+            item.Quantity = quantity;
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-
-
-        public Task<ShoppingCart> GetCartAsync(string userId)
+        public async Task<ShoppingCart> GetCartAsync(int userId)
         {
-            throw new NotImplementedException();
+            return await GetOrCreateCartAsync(userId);
         }
 
-        public Task<bool> CompleteOrderAsync(string userId)
+        public async Task<bool> CompleteOrderAsync(int userId)
         {
-            throw new NotImplementedException();
+            var cart = await GetOrCreateCartAsync(userId);
+            if (!cart.Items.Any()) return false;
+
+            cart.Status = CartStatus.Completed;
+            cart.CheckoutAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public Task<bool> IsBookAvailableAsync(int bookId)
+        public async Task<bool> UpdateCartStatusAsync(int userId, CartStatus status)
         {
-            throw new NotImplementedException();
+            var cart = await GetOrCreateCartAsync(userId);
+            cart.Status = status;
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public Task<bool> UpdateCartStatusAsync(string userId, CartStatus status)
+        public async Task<int> GetCartItemCountAsync(int userId)
         {
-            throw new NotImplementedException();
+            var cart = await GetOrCreateCartAsync(userId);
+            return cart.Items.Count;
         }
 
-        public Task<int> GetCartItemCountAsync(string userId)
+        public async Task<CartItem?> GetCartItemAsync(int userId, int bookId)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<CartItem?> GetCartItemAsync(string userId, int bookId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> ProcessCartAsync(string? userId, object paymentInfo)
-        {
-            throw new NotImplementedException();
+            var cart = await GetOrCreateCartAsync(userId);
+            return cart.Items.FirstOrDefault(i => i.BookId == bookId);
         }
     }
 }
