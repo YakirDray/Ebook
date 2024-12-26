@@ -13,11 +13,12 @@ namespace MyEBookLibrary.Models
         public DateTime? ReturnDate { get; set; }
         public BookFormat Format { get; set; }
 
-
+        public bool IsReturned => ReturnDate.HasValue;
+        public string UserName => User?.UserName ?? "Unknown";
         public virtual User User { get; set; } = null!;
         public virtual Book Book { get; set; } = null!;
     }
-     public class Transaction
+    public class Transaction
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
@@ -25,3 +26,4 @@ namespace MyEBookLibrary.Models
         // Add other properties here
     }
 }
+

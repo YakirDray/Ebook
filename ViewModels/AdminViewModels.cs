@@ -16,63 +16,30 @@ namespace MyEBookLibrary.ViewModels
         public decimal TotalRevenue { get; set; }
         public int TotalReviews { get; set; }
         public List<Book> PopularBooks { get; set; } = new();
+
+        // ספרים שהוחזרו
+        public List<Book> ReturnedBooks { get; set; } = new();
+
+        // תאריכי החזרה צפויים
+        public List<DateTime> ReturnDueDates { get; set; } = new();
+
+        // ספרים עם איחור
+        public List<Book> LateReturns { get; set; } = new();
+
+        // קנסות על החזרות מאוחרות
+        public decimal TotalFines { get; set; }
+
+        // סטטוס השאלה
+        public bool BorrowLimitExceeded { get; set; }
         public List<WaitingListItem> RecentWaitingList { get; set; } = new();
+        // תוספת: ספרים שההחזרה שלהם צפויה ב-7 הימים הקרובים
+        public List<BorrowHistoryViewModel> UpcomingReturns { get; set; } = new();
+
+        // תוספת: משתמשים שהגיעו לגבול השאלות שלהם
+        public List<UserManagementViewModel> UsersNearBorrowLimit { get; set; } = new();
     }
 
-    public class BookCreateViewModel
-    {
-        [Required(ErrorMessage = "נדרשת כותרת")]
-        [StringLength(200)]
-        public string Title { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "נדרש שם מחבר")]
-        [StringLength(100)]
-        public string Author { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "נדרשת הוצאה לאור")]
-        public string Publisher { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "נדרשת שנת הוצאה")]
-        [Range(1800, 2100)]
-        public int YearOfPublication { get; set; }
-
-        [Required(ErrorMessage = "נדרש ז'אנר")]
-        public string Genre { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "נדרש תיאור")]
-        public string Description { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "נדרש מחיר רכישה")]
-        [Range(0.01, 1000)]
-        public decimal BuyPrice { get; set; }
-
-        [Required(ErrorMessage = "נדרש מחיר השאלה")]
-        [Range(0.01, 1000)]
-        public decimal BorrowPrice { get; set; }
-
-        public bool IsBorrowable { get; set; }
-
-        [Required(ErrorMessage = "נדרשת הגבלת גיל")]
-        public string AgeRestriction { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "נדרש מספר עותקים")]
-        [Range(0, 100)]
-        public int AvailableCopies { get; set; }
-
-        [Required(ErrorMessage = "נדרש לפחות פורמט אחד")]
-        public List<BookFormat> AvailableFormats { get; set; } = new();
-
-        public IFormFile? CoverImage { get; set; }
-    }
-
-    public class BookEditViewModel : BookCreateViewModel
-    {
-        public int Id { get; set; }
-        public string? CurrentCoverImageUrl { get; set; }
-        public decimal? OriginalPrice { get; set; }
-        public DateTime? DiscountEndDate { get; set; }
-    }
-
+  
     public class DiscountViewModel
     {
         public int BookId { get; set; }
@@ -85,7 +52,7 @@ namespace MyEBookLibrary.ViewModels
         public DateTime EndDate { get; set; }
     }
 
-   
+
     public class UserManagementViewModel
     {
         public string Id { get; set; } = string.Empty;

@@ -14,29 +14,34 @@
 
             <div class="mb-4">
                 <label asp-for="UserName" class="block text-gray-700 text-sm font-bold mb-2">שם משתמש</label>
-                <input asp-for="UserName" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                <input asp-for="UserName"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                 <span asp-validation-for="UserName" class="text-red-500 text-sm"></span>
             </div>
 
             <div class="mb-4">
                 <label asp-for="Email" class="block text-gray-700 text-sm font-bold mb-2">אימייל</label>
-                <input asp-for="Email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                <input asp-for="Email"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                 <span asp-validation-for="Email" class="text-red-500 text-sm"></span>
             </div>
 
             <div class="mb-4">
                 <label asp-for="Password" class="block text-gray-700 text-sm font-bold mb-2">סיסמה</label>
-                <input asp-for="Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                <input asp-for="Password"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                 <span asp-validation-for="Password" class="text-red-500 text-sm"></span>
             </div>
 
             <div class="mb-6">
                 <label asp-for="ConfirmPassword" class="block text-gray-700 text-sm font-bold mb-2">אימות סיסמה</label>
-                <input asp-for="ConfirmPassword" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                <input asp-for="ConfirmPassword"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                 <span asp-validation-for="ConfirmPassword" class="text-red-500 text-sm"></span>
             </div>
 
-            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            <button type="submit"
+                class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                 הירשם
             </button>
         </form>

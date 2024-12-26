@@ -12,6 +12,19 @@ namespace MyEBookLibrary.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "ApplicationUser",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicationUser", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
@@ -60,17 +73,21 @@ namespace MyEBookLibrary.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Author = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Publisher = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    YearOfPublication = table.Column<int>(type: "int", nullable: false),
-                    BuyPrice = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
-                    BorrowPrice = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
                     Genre = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Publisher = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    YearOfPublication = table.Column<int>(type: "int", nullable: false),
                     CoverImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AgeRestriction = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BuyPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    BorrowPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     IsBorrowable = table.Column<bool>(type: "bit", nullable: false),
                     AvailableCopies = table.Column<int>(type: "int", nullable: false),
-                    AvailableFormats = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    AvailableFormats = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AgeRestriction = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OriginalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    DiscountEndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DiscountedPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    IsAvailable = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -184,6 +201,48 @@ namespace MyEBookLibrary.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ShoppingCarts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CheckoutAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShoppingCarts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ShoppingCarts_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Transactions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Transactions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Transactions_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "BookReviews",
                 columns: table => new
                 {
@@ -192,15 +251,22 @@ namespace MyEBookLibrary.Migrations
                     BookId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false),
-                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    ReviewerId = table.Column<int>(type: "int", nullable: false),
                     ReviewDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BookReviews", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BookReviews_AspNetUsers_UserId",
+                        name: "FK_BookReviews_ApplicationUser_UserId",
                         column: x => x.UserId,
+                        principalTable: "ApplicationUser",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BookReviews_AspNetUsers_ReviewerId",
+                        column: x => x.ReviewerId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -213,7 +279,7 @@ namespace MyEBookLibrary.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserBooks",
+                name: "UserBook",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -228,15 +294,15 @@ namespace MyEBookLibrary.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserBooks", x => x.Id);
+                    table.PrimaryKey("PK_UserBook", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserBooks_AspNetUsers_UserId",
+                        name: "FK_UserBook_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserBooks_Books_BookId",
+                        name: "FK_UserBook_Books_BookId",
                         column: x => x.BookId,
                         principalTable: "Books",
                         principalColumn: "Id",
@@ -268,6 +334,37 @@ namespace MyEBookLibrary.Migrations
                         name: "FK_WaitingList_Books_BookId",
                         column: x => x.BookId,
                         principalTable: "Books",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CartItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BookId = table.Column<int>(type: "int", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Format = table.Column<int>(type: "int", nullable: false),
+                    IsBorrow = table.Column<bool>(type: "bit", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    ShoppingCartId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CartItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CartItems_Books_BookId",
+                        column: x => x.BookId,
+                        principalTable: "Books",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CartItems_ShoppingCarts_ShoppingCartId",
+                        column: x => x.ShoppingCartId,
+                        principalTable: "ShoppingCarts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -317,6 +414,11 @@ namespace MyEBookLibrary.Migrations
                 column: "BookId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BookReviews_ReviewerId",
+                table: "BookReviews",
+                column: "ReviewerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_BookReviews_UserId",
                 table: "BookReviews",
                 column: "UserId");
@@ -337,13 +439,33 @@ namespace MyEBookLibrary.Migrations
                 column: "Title");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserBooks_BookId",
-                table: "UserBooks",
+                name: "IX_CartItems_BookId",
+                table: "CartItems",
                 column: "BookId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserBooks_UserId",
-                table: "UserBooks",
+                name: "IX_CartItems_ShoppingCartId",
+                table: "CartItems",
+                column: "ShoppingCartId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShoppingCarts_UserId",
+                table: "ShoppingCarts",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transactions_UserId",
+                table: "Transactions",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserBook_BookId",
+                table: "UserBook",
+                column: "BookId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserBook_UserId",
+                table: "UserBook",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -379,7 +501,13 @@ namespace MyEBookLibrary.Migrations
                 name: "BookReviews");
 
             migrationBuilder.DropTable(
-                name: "UserBooks");
+                name: "CartItems");
+
+            migrationBuilder.DropTable(
+                name: "Transactions");
+
+            migrationBuilder.DropTable(
+                name: "UserBook");
 
             migrationBuilder.DropTable(
                 name: "WaitingList");
@@ -388,10 +516,16 @@ namespace MyEBookLibrary.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "ApplicationUser");
+
+            migrationBuilder.DropTable(
+                name: "ShoppingCarts");
 
             migrationBuilder.DropTable(
                 name: "Books");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

@@ -1,50 +1,126 @@
-@model BooksIndexViewModel
-
 <div class="library-container" dir="rtl">
-    <h1 class="page-title">ספרייה דיגיטלית</h1>
+    <h1 class="page-title text-4xl font-bold text-center mt-8">ספרייה דיגיטלית</h1>
 
-    <!-- Search and Filter -->
-    <div class="search-section">
-        <form method="get" class="search-form">
-            <input type="text" name="searchString" value="@Model.SearchString" 
-                   class="search-input" placeholder="חיפוש ספרים..." />
-            <select name="genre" class="genre-select">
-                <option value="">כל הז'אנרים</option>
-                @foreach (var genre in Model.Genres)
-                {
-                    <option value="@genre" selected="@(genre == Model.SelectedGenre)">
-                        @genre
-                    </option>
-                }
-            </select>
-            <button type="submit" class="search-button">חיפוש</button>
+    <!-- חיפוש וסינון -->
+    <div class="search-section max-w-4xl mx-auto mt-6">
+        <form method="get" class="search-form flex gap-4 items-end">
+            <div class="flex-grow">
+                <input type="text" id="searchInput" name="searchString" value="@Model.SearchString" 
+                       class="search-input w-full border p-2 rounded-lg" placeholder="חיפוש ספרים לפי כותרת או מחבר..." />
+            </div>
+
+            <div class="w-1/4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">מיין לפי</label>
+                <select id="sortBy" class="form-select w-full rounded-lg border-gray-300">
+                    <option value="price_asc">⬆️ מהזול</option>
+                    <option value="price_desc">⬇️ מהיקר</option>
+                    <option value="copies_asc">📉 עותקים זמינים</option>
+                    <option value="copies_desc">📈 עותקים זמינים</option>
+                </select>
+            </div>
+
+            <div class="w-1/4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">סינון לפי ז'אנר</label>
+                <select id="genreFilter" class="form-select w-full rounded-lg border-gray-300">
+                    <option value="">כל הז'אנרים</option>
+                    <option value="ספרות יפה">ספרות יפה</option>
+                    <option value="ספרות עיון">ספרות עיון</option>
+                    <option value="ספרי ילדים">ספרי ילדים</option>
+                    <option value="ספרי לימוד">ספרי לימוד</option>
+                    <option value="מדע בדיוני">מדע בדיוני</option>
+                    <option value="מתח">מתח</option>
+                    <option value="רומן">רומן</option>
+                    <option value="ביוגרפיה">ביוגרפיה</option>
+                </select>
+            </div>
         </form>
     </div>
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        @foreach (var book in Model.Books)
-        {
-            <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-                <div class="bg-cover bg-center h-56 p-4" style="background-image: url('@book.CoverImageUrl')">
-                    <img src="@book.CoverImageUrl" alt="Cover of @book.Title" class="w-full h-full object-cover opacity-0">
-                </div>
-                <div class="p-4">
-                    <h2 class="mt-2 mb-2 font-bold">@book.Title</h2>
-                    <p class="text-sm text-gray-600">@book.Author</p>
-                    <p class="text-sm text-gray-600">@book.Genre</p>
-                </div>
-                <div class="p-4 border-t border-gray-100">
-                    <div class="flex justify-between">
-                        <span>השאלה: ₪@book.BorrowPrice</span>
-                        <span>רכישה: ₪@book.BuyPrice</span>
+
+    <!-- הצגת ספרים -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @foreach (var book in Model.Books)
+            {
+                <div class="bg-white shadow-lg rounded-lg overflow-hidden book-item">
+                    <div class="bg-cover bg-center h-56 p-4" style="background-image: url('@book.CoverImageUrl')">
+                        <img src="@book.CoverImageUrl" alt="כריכה של @book.Title" class="w-full h-full object-cover opacity-0">
+                    </div>
+                    <div class="p-4">
+                        <h2 class="mt-2 mb-2 font-bold">@book.Title</h2>
+                        <p class="text-sm text-gray-600">@book.Author</p>
+                        <p class="text-sm text-gray-600">@book.Genre</p>
+                    </div>
+                    <div class="p-4 border-t border-gray-100">
+                        <div class="flex justify-between">
+                            <span class="borrow-price">השאלה: ₪@book.BorrowPrice</span>
+                            <span class="buy-price">רכישה: ₪@book.BuyPrice</span>
+                        </div>
+                    </div>
+                    <div class="p-4 border-t border-gray-100 text-center">
+                        <a href="@Url.Action("Details", new { id = book.Id })" class="text-lg text-blue-500 hover:text-blue-600">
+                            פרטים נוספים
+                        </a>
                     </div>
                 </div>
-                <div class="p-4 border-t border-gray-100 text-center">
-                    <a href="@Url.Action("Details", new { id = book.Id })" class="text-lg text-blue-500 hover:text-blue-600">
-                        פרטים נוספים
-                    </a>
-                </div>
-            </div>
-        }
+            }
+        </div>
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+    // סינון ומיון
+    $('#searchInput, #genreFilter, #sortBy').on('input change', function () {
+        filterBooks();
+    });
+
+    function filterBooks() {
+        var search = $('#searchInput').val().toLowerCase();
+        var genre = $('#genreFilter').val().toLowerCase().trim();
+
+        $('.book-item').each(function () {
+            var title = $(this).find('.font-bold').text().toLowerCase();
+            var author = $(this).find('.text-sm.text-gray-600').first().text().toLowerCase();
+            var bookGenre = $(this).find('.text-sm.text-gray-600').last().text().toLowerCase().trim();
+
+            var showRow = true;
+
+            if (search && !(title.includes(search) || author.includes(search))) {
+                showRow = false;
+            }
+
+            if (genre && !bookGenre.includes(genre)) {
+                showRow = false;
+            }
+
+            $(this).toggle(showRow);
+        });
+    }
+
+    $('#sortBy').change(function () {
+        sortBooks();
+    });
+
+    function sortBooks() {
+        var sortBy = $('#sortBy').val();
+        var isAscending = sortBy.includes("asc");
+
+        var books = $('.book-item').get();
+        books.sort(function (a, b) {
+            var valA = getNumericValue($(a).find('.borrow-price'));
+            var valB = getNumericValue($(b).find('.borrow-price'));
+
+            return isAscending ? valA - valB : valB - valA;
+        });
+
+        $.each(books, function (index, book) {
+            $('.grid').append(book);
+        });
+    }
+
+    function getNumericValue(cell) {
+        var text = cell.text().replace('₪', '');
+        return Number(text.replace(/[^0-9.-]/g, ""));
+    }
+});
+
+</script>

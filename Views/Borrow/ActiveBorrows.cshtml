@@ -1,0 +1,31 @@
+@model IEnumerable<MyEBookLibrary.ViewModels.BorrowHistoryViewModel>
+
+<h1 class="text-2xl font-bold mb-4">השאלות פעילות</h1>
+
+<table class="table-auto w-full">
+    <thead>
+        <tr>
+            <th class="px-4 py-2">שם משתמש</th>
+            <th class="px-4 py-2">שם הספר</th>
+            <th class="px-4 py-2">תאריך השאלה</th>
+            <th class="px-4 py-2">תאריך החזרה</th>
+            <th class="px-4 py-2">האם הוחזר</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var borrow in Model)
+        {
+            <tr>
+                <td class="border px-4 py-2">@borrow.UserName</td>
+                <td class="border px-4 py-2">@borrow.BookTitle</td>
+                <td class="border px-4 py-2">@borrow.BorrowDate.ToShortDateString()</td>
+                <td class="border px-4 py-2">
+                    @(borrow.ReturnDate.HasValue ? borrow.ReturnDate.Value.ToShortDateString() : "טרם הוחזר")
+                </td>
+                <td class="border px-4 py-2">
+                    @(borrow.IsReturned ? "כן" : "לא")
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

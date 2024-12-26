@@ -4,14 +4,15 @@
     <div class="max-w-3xl mx-auto">
         <h1 class="text-2xl font-bold mb-6">הוספת ספר חדש</h1>
 
-        <form asp-action="CreateBook" asp-controller="Admin" method="post" enctype="multipart/form-data" class="bg-white rounded-lg shadow p-6">
+        <form asp-action="CreateBook" asp-controller="Admin" method="post" enctype="multipart/form-data"
+            class="bg-white rounded-lg shadow p-6">
             <div asp-validation-summary="ModelOnly" class="text-red-500 mb-4"></div>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- מידע בסיסי -->
                 <div>
                     <h2 class="text-lg font-medium mb-4">מידע בסיסי</h2>
-                    
+
                     <div class="mb-4">
                         <label asp-for="Title" class="block text-sm font-medium text-gray-700 mb-1">כותרת</label>
                         <input asp-for="Title" class="form-input w-full rounded-lg border-gray-300" />
@@ -25,14 +26,17 @@
                     </div>
 
                     <div class="mb-4">
-                        <label asp-for="Publisher" class="block text-sm font-medium text-gray-700 mb-1">הוצאה לאור</label>
+                        <label asp-for="Publisher" class="block text-sm font-medium text-gray-700 mb-1">הוצאה
+                            לאור</label>
                         <input asp-for="Publisher" class="form-input w-full rounded-lg border-gray-300" />
                         <span asp-validation-for="Publisher" class="text-red-500 text-sm"></span>
                     </div>
 
                     <div class="mb-4">
-                        <label asp-for="YearOfPublication" class="block text-sm font-medium text-gray-700 mb-1">שנת הוצאה</label>
-                        <input asp-for="YearOfPublication" type="number" class="form-input w-full rounded-lg border-gray-300" />
+                        <label asp-for="YearOfPublication" class="block text-sm font-medium text-gray-700 mb-1">שנת
+                            הוצאה</label>
+                        <input asp-for="YearOfPublication" type="number"
+                            class="form-input w-full rounded-lg border-gray-300" />
                         <span asp-validation-for="YearOfPublication" class="text-red-500 text-sm"></span>
                     </div>
                 </div>
@@ -59,12 +63,14 @@
 
                     <div class="mb-4">
                         <label asp-for="Description" class="block text-sm font-medium text-gray-700 mb-1">תיאור</label>
-                        <textarea asp-for="Description" rows="4" class="form-textarea w-full rounded-lg border-gray-300"></textarea>
+                        <textarea asp-for="Description" rows="4"
+                            class="form-textarea w-full rounded-lg border-gray-300"></textarea>
                         <span asp-validation-for="Description" class="text-red-500 text-sm"></span>
                     </div>
 
                     <div class="mb-4">
-                        <label asp-for="AgeRestriction" class="block text-sm font-medium text-gray-700 mb-1">הגבלת גיל</label>
+                        <label asp-for="AgeRestriction" class="block text-sm font-medium text-gray-700 mb-1">הגבלת
+                            גיל</label>
                         <select asp-for="AgeRestriction" class="form-select w-full rounded-lg border-gray-300">
                             <option value="0">ללא הגבלה</option>
                             <option value="8">+8</option>
@@ -81,26 +87,33 @@
                     <h2 class="text-lg font-medium mb-4">מחירים ומלאי</h2>
 
                     <div class="mb-4">
-                        <label asp-for="BuyPrice" class="block text-sm font-medium text-gray-700 mb-1">מחיר רכישה</label>
-                        <input asp-for="BuyPrice" type="number" step="0.01" class="form-input w-full rounded-lg border-gray-300" />
+                        <label asp-for="BuyPrice" class="block text-sm font-medium text-gray-700 mb-1">מחיר
+                            רכישה</label>
+                        <input asp-for="BuyPrice" type="number" step="0.01"
+                            class="form-input w-full rounded-lg border-gray-300" />
                         <span asp-validation-for="BuyPrice" class="text-red-500 text-sm"></span>
                     </div>
 
                     <div class="mb-4">
-                        <label asp-for="BorrowPrice" class="block text-sm font-medium text-gray-700 mb-1">מחיר השאלה</label>
-                        <input asp-for="BorrowPrice" type="number" step="0.01" class="form-input w-full rounded-lg border-gray-300" />
+                        <label asp-for="BorrowPrice" class="block text-sm font-medium text-gray-700 mb-1">מחיר
+                            השאלה</label>
+                        <input asp-for="BorrowPrice" type="number" step="0.01"
+                            class="form-input w-full rounded-lg border-gray-300" />
                         <span asp-validation-for="BorrowPrice" class="text-red-500 text-sm"></span>
                     </div>
 
                     <div class="mb-4">
-                        <label asp-for="AvailableCopies" class="block text-sm font-medium text-gray-700 mb-1">מספר עותקים</label>
-                        <input asp-for="AvailableCopies" type="number" class="form-input w-full rounded-lg border-gray-300" />
+                        <label asp-for="AvailableCopies" class="block text-sm font-medium text-gray-700 mb-1">מספר
+                            עותקים</label>
+                        <input asp-for="AvailableCopies" type="number"
+                            class="form-input w-full rounded-lg border-gray-300" />
                         <span asp-validation-for="AvailableCopies" class="text-red-500 text-sm"></span>
                     </div>
 
                     <div class="mb-4">
                         <label class="flex items-center">
-                            <input asp-for="IsBorrowable" type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded">
+                            <input asp-for="IsBorrowable" type="checkbox"
+                                class="form-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded">
                             <span class="mr-2">ניתן להשאלה</span>
                         </label>
                     </div>
@@ -114,34 +127,41 @@
                         <label class="block text-sm font-medium text-gray-700 mb-2">פורמטים זמינים</label>
                         <div class="space-y-2">
                             <div>
-                                <input type="checkbox" name="AvailableFormats" value="PDF" class="form-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded">
+                                <input type="checkbox" name="AvailableFormats" value="PDF"
+                                    class="form-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded">
                                 <label class="mr-2">PDF</label>
                             </div>
                             <div>
-                                <input type="checkbox" name="AvailableFormats" value="EPUB" class="form-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded">
+                                <input type="checkbox" name="AvailableFormats" value="EPUB"
+                                    class="form-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded">
                                 <label class="mr-2">EPUB</label>
                             </div>
                             <div>
-                                <input type="checkbox" name="AvailableFormats" value="MOBI" class="form-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded">
+                                <input type="checkbox" name="AvailableFormats" value="MOBI"
+                                    class="form-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded">
                                 <label class="mr-2">MOBI</label>
                             </div>
                             <div>
-                                <input type="checkbox" name="AvailableFormats" value="F2B" class="form-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded">
+                                <input type="checkbox" name="AvailableFormats" value="F2B"
+                                    class="form-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded">
                                 <label class="mr-2">F2B</label>
                             </div>
                         </div>
                     </div>
 
                     <div class="mb-4">
-                        <label asp-for="CoverImage" class="block text-sm font-medium text-gray-700 mb-1">תמונת כריכה</label>
-                        <input asp-for="CoverImage" type="file" accept="image/*" class="form-input w-full rounded-lg border-gray-300" />
+                        <label asp-for="CoverImage" class="block text-sm font-medium text-gray-700 mb-1">תמונת
+                            כריכה</label>
+                        <input asp-for="CoverImage" type="file" accept="image/*"
+                            class="form-input w-full rounded-lg border-gray-300" />
                         <span asp-validation-for="CoverImage" class="text-red-500 text-sm"></span>
                     </div>
                 </div>
             </div>
 
             <div class="flex justify-end mt-6">
-                <a href="@Url.Action("Index", "Admin")" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg ml-2">ביטול</a>
+                <a href="@Url.Action("Index", "Admin")"
+                    class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg ml-2">ביטול</a>
                 <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg">שמור ספר</button>
             </div>
         </form>

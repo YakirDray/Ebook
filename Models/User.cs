@@ -7,8 +7,8 @@ namespace MyEBookLibrary.Models
 
         public ICollection<Transaction> Transactions { get; set; } = [];
 
-        public virtual ICollection<UserBook> Books { get; set ;} = [];
-            public virtual ICollection<BookReview> Reviews { get; set; } = [];
+        public virtual ICollection<UserBook> Books { get; set; } = [];
+        public virtual ICollection<BookReview> Reviews { get; set; } = [];
         public virtual ICollection<WaitingListItem> WaitingListItems { get; set; } = [];
 
         internal decimal Sum(Func<object, object> value)

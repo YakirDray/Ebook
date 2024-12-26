@@ -1,4 +1,3 @@
-// Data/ApplicationDbContext.cs
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -7,72 +6,90 @@ using MyEBookLibrary.Models;
 
 namespace MyEBookLibrary.Data
 {
-    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : IdentityDbContext<User, IdentityRole<int>, int>(options)
+    public class ApplicationDbContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
-        public required DbSet<Book> Books { get; set; }
-        public required DbSet<UserBook> UserBooks { get; set; }
-        public required DbSet<WaitingListItem> WaitingList { get; set; }
-        public required DbSet<BookReview> BookReviews { get; set; }
-        public required DbSet<ShoppingCart> ShoppingCarts { get; set; }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
+        {
+        }
 
+        public DbSet<Book> Books { get; set; } = null!;
+        public DbSet<UserBook> UserBooks { get; set; } = null!;
+        public DbSet<WaitingListItem> WaitingList { get; set; } = null!;
+        public DbSet<BookReview> BookReviews { get; set; } = null!;
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; } = null!;
+        public DbSet<CartItem> CartItems { get; set; } = null!;
+        public DbSet<Transaction> Transactions { get; set; } = null!;
+        public DbSet<UserBook> Borrows { get; set; } = null!;
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // הגדרת יחסים ומפתחות זרים
-            ConfigureRelationships(modelBuilder);
+            // Cart relationships
+            modelBuilder.Entity<ShoppingCart>(entity =>
+            {
+                entity.HasMany(c => c.Items)
+                    .WithOne()
+                    .HasForeignKey("ShoppingCartId")
+                    .OnDelete(DeleteBehavior.Cascade);
 
-            // הגדרות עבור תכונות decimal
-            ConfigureDecimalProperties(modelBuilder);
+                entity.HasOne<User>()
+                    .WithMany()
+                    .HasForeignKey(c => c.UserId)
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
 
-            // המרת רשימת פורמטים לטקסט
-            ConfigureBookFormats(modelBuilder);
-        }
-
-        private void ConfigureRelationships(ModelBuilder modelBuilder)
+           modelBuilder.Entity<UserBook>(entity =>
         {
-            // UserBook relationships
-            modelBuilder.Entity<UserBook>()
-                .HasOne(ub => ub.User)
+            entity.ToTable("UserBooks");  // מגדיר את שם הטבלה
+
+            entity.HasOne(ub => ub.User)
                 .WithMany(u => u.Books)
                 .HasForeignKey(ub => ub.UserId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<UserBook>()
-                .HasOne(ub => ub.Book)
+            entity.HasOne(ub => ub.Book)
                 .WithMany(b => b.UserBooks)
                 .HasForeignKey(ub => ub.BookId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
+        });
 
             // WaitingList relationships
-            modelBuilder.Entity<WaitingListItem>()
-                .HasOne(w => w.User)
-                .WithMany(u => u.WaitingListItems)
-                .HasForeignKey(w => w.UserId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<WaitingListItem>(entity =>
+            {
+                entity.HasOne(w => w.User)
+                    .WithMany(u => u.WaitingListItems)
+                    .HasForeignKey(w => w.UserId)
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<WaitingListItem>()
-                .HasOne(w => w.Book)
-                .WithMany(static b => b.WaitingList)
-                .HasForeignKey(w => w.BookId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(w => w.Book)
+                    .WithMany(b => b.WaitingList)
+                    .HasForeignKey(w => w.BookId)
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
 
             // BookReview relationships
-            modelBuilder.Entity<BookReview>()
-                .HasOne(r => r.Reviewer)
-                .WithMany(u => u.Reviews)
-                .HasForeignKey(r => r.ReviewerId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
-        }
+            modelBuilder.Entity<BookReview>(entity =>
+            {
+                entity.HasOne(r => r.Reviewer)
+                    .WithMany(u => u.Reviews)
+                    .HasForeignKey(r => r.ReviewerId)
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.Cascade);
 
-        private void ConfigureDecimalProperties(ModelBuilder modelBuilder)
-        {
+                entity.HasOne(r => r.Book)
+                    .WithMany(b => b.Reviews)
+                    .HasForeignKey(r => r.BookId)
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // Configure decimal properties
             modelBuilder.Entity<Book>(entity =>
             {
                 entity.Property(e => e.Title)
@@ -100,27 +117,28 @@ namespace MyEBookLibrary.Data
                 entity.HasIndex(e => e.Genre);
             });
 
-            modelBuilder.Entity<CartItem>()
-                .Property(c => c.Price)
-                .HasColumnType("decimal(18, 2)");
+            modelBuilder.Entity<CartItem>(entity =>
+            {
+                entity.Property(c => c.Price)
+                    .HasColumnType("decimal(18, 2)");
 
-            modelBuilder.Entity<CartItem>()
-                .Property(c => c.Subtotal)
-                .HasColumnType("decimal(18, 2)");
+                entity.HasOne(ci => ci.Book)
+                    .WithMany()
+                    .HasForeignKey(ci => ci.BookId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
 
             modelBuilder.Entity<Transaction>()
                 .Property(t => t.Amount)
                 .HasColumnType("decimal(18, 2)");
-        }
 
-        private void ConfigureBookFormats(ModelBuilder modelBuilder)
-        {
+            // Configure book formats
             modelBuilder.Entity<Book>()
                 .Property(e => e.AvailableFormats)
                 .HasConversion(
                     v => string.Join(',', v),
                     v => v.Split(',', StringSplitOptions.RemoveEmptyEntries)
-                          .Select(format => ParseBookFormat(format))  // קריאה לפונקציה חיצונית
+                          .Select(format => ParseBookFormat(format))
                           .ToList(),
                     new ValueComparer<List<BookFormat>>(
                         (c1, c2) => (c1 ?? new List<BookFormat>()).SequenceEqual(c2 ?? new List<BookFormat>()),
@@ -130,17 +148,13 @@ namespace MyEBookLibrary.Data
                 );
         }
 
-        // פונקציה לעקיפת השימוש ב-out ו-?.
         private static BookFormat ParseBookFormat(string format)
         {
             if (Enum.TryParse<BookFormat>(format, out var result))
             {
                 return result;
             }
-            return BookFormat.PDF;  // ברירת מחדל במקרה של ערך לא חוקי
+            return BookFormat.PDF;
         }
-
     }
-
-
 }

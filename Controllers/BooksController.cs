@@ -99,8 +99,8 @@ namespace MyEBookLibrary.Controllers
             if (!User.Identity!.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
-            var userId = _userManager.GetUserId(User);
-            var result = await _cartService.AddToCartAsync(userId!, id, true, format);
+            var userId = int.Parse(_userManager.GetUserId(User)!);
+            var result = await _cartService.AddToCartAsync(userId, id, true, format);
 
             if (result)
                 return RedirectToAction("Checkout", "Cart");
@@ -117,7 +117,7 @@ namespace MyEBookLibrary.Controllers
             if (!User.Identity!.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
-            var userId = _userManager.GetUserId(User);
+            var userId =int.Parse(_userManager.GetUserId(User)!);
             var result = await _cartService.AddToCartAsync(userId!, id, false, format);
 
             if (result)

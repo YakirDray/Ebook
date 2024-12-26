@@ -7,7 +7,6 @@ namespace MyEBookLibrary.ViewModels.Payment
     public class CreditCardDetails
     {
         [Required(ErrorMessage = "נדרש מספר כרטיס")]
-        [RegularExpression(@"^\d{16}$", ErrorMessage = "מספר כרטיס לא תקין")]
         [Display(Name = "מספר כרטיס")]
         public string CardNumber { get; set; } = string.Empty;
 
@@ -29,23 +28,25 @@ namespace MyEBookLibrary.ViewModels.Payment
         [Required(ErrorMessage = "נדרש שם בעל הכרטיס")]
         [Display(Name = "שם בעל הכרטיס")]
         public string CardHolderName { get; set; } = string.Empty;
+        public string? StripeToken { get; internal set; }
     }
 
-  public class CheckoutViewModel
-{
-    public decimal Total { get; set; }
-    public List<CartItem> Items { get; set; } = new();
-    public CreditCardDetails CardDetails { get; set; } = new();
-    public PaymentMethod PaymentMethod { get; set; }
-}
+    public class CheckoutViewModel
+    {
+        public decimal Total => Items.Sum(item => item.Subtotal);
 
-   public class PaymentConfirmationViewModel
-{
-    public decimal Amount { get; set; }
-    public List<CartItem> PurchasedItems { get; set; } = new();
-    public string TransactionId { get; set; } = string.Empty;
-    public DateTime PurchaseDate { get; set; } = DateTime.UtcNow;
-}
+        public List<CartItem> Items { get; set; } = new();
+        public CreditCardDetails CardDetails { get; set; } = new();
+        public PaymentMethod PaymentMethod { get; set; }
+    }
+
+    public class PaymentConfirmationViewModel
+    {
+        public decimal Amount { get; set; }
+        public List<CartItem> PurchasedItems { get; set; } = new();
+        public string TransactionId { get; set; } = string.Empty;
+        public DateTime PurchaseDate { get; set; } = DateTime.UtcNow;
+    }
 
     public class PaymentResultViewModel
     {

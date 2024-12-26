@@ -19,14 +19,14 @@ namespace MyEBookLibrary.Models
         [Required]
         [StringLength(1000, ErrorMessage = "Comment cannot be longer than 1000 characters")]
         public string Comment { get; set; } = string.Empty;
-    public int ReviewerId { get; set; } // שינוי שם למפתח הזר
+        public int ReviewerId { get; set; } // שינוי שם למפתח הזר
 
         public DateTime ReviewDate { get; set; } = DateTime.UtcNow;
-    public required User Reviewer { get; set; } // התאמת המפתח הזר
+        public required User Reviewer { get; set; } // התאמת המפתח הזר
 
         public virtual Book Book { get; set; } = null!;
         public virtual ApplicationUser User { get; set; } = null!;
     }
 
-    
+
 }

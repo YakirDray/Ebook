@@ -9,5 +9,6 @@ namespace MyEBookLibrary.Services.Interfaces
         Task SendReturnReminderAsync(User user, Book book, DateTime returnDate);
         Task SendBookAvailabilityNotificationAsync(string userId, int bookId, BookFormat format);
         Task SendBorrowExtensionNotificationAsync(string userId, int bookId, DateTime newDueDate);
+
     }
 }

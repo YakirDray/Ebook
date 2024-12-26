@@ -203,6 +203,9 @@ namespace MyEBookLibrary.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsBorrowable")
                         .HasColumnType("bit");
 
@@ -314,9 +317,6 @@ namespace MyEBookLibrary.Migrations
                     b.Property<int?>("ShoppingCartId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Subtotal")
-                        .HasColumnType("decimal(18, 2)");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -328,7 +328,7 @@ namespace MyEBookLibrary.Migrations
 
                     b.HasIndex("ShoppingCartId");
 
-                    b.ToTable("CartItem");
+                    b.ToTable("CartItems");
                 });
 
             modelBuilder.Entity("MyEBookLibrary.Models.ShoppingCart", b =>
@@ -348,11 +348,12 @@ namespace MyEBookLibrary.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("ShoppingCarts");
                 });
@@ -378,7 +379,7 @@ namespace MyEBookLibrary.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Transaction");
+                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("MyEBookLibrary.Models.User", b =>
@@ -484,7 +485,7 @@ namespace MyEBookLibrary.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserBooks");
+                    b.ToTable("UserBook");
                 });
 
             modelBuilder.Entity("MyEBookLibrary.Models.WaitingListItem", b =>
@@ -607,9 +608,19 @@ namespace MyEBookLibrary.Migrations
 
                     b.HasOne("MyEBookLibrary.Models.ShoppingCart", null)
                         .WithMany("Items")
-                        .HasForeignKey("ShoppingCartId");
+                        .HasForeignKey("ShoppingCartId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Book");
+                });
+
+            modelBuilder.Entity("MyEBookLibrary.Models.ShoppingCart", b =>
+                {
+                    b.HasOne("MyEBookLibrary.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MyEBookLibrary.Models.Transaction", b =>

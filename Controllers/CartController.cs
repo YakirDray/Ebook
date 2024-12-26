@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyEBookLibrary.Models;
 using MyEBookLibrary.Services.Interfaces;
 using MyEBookLibrary.ViewModels.Payment;
+using Stripe;
 
 namespace MyEBookLibrary.Controllers
 {
@@ -12,20 +13,18 @@ namespace MyEBookLibrary.Controllers
     {
         private readonly ICartService _cartService;
         private readonly UserManager<User> _userManager;
+        private readonly IConfiguration _configuration;
 
-        public CartController(ICartService cartService, UserManager<User> userManager)
+        public CartController(ICartService cartService, UserManager<User> userManager, IConfiguration configuration)
         {
             _cartService = cartService;
             _userManager = userManager;
+            _configuration = configuration;
         }
 
         public async Task<IActionResult> Index()
         {
-            var userId = _userManager.GetUserId(User);
-            if (string.IsNullOrEmpty(userId))
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            var userId = int.Parse(_userManager.GetUserId(User)!);
             var cart = await _cartService.GetOrCreateCartAsync(userId);
             return View(cart);
         }
@@ -33,104 +32,115 @@ namespace MyEBookLibrary.Controllers
         [HttpPost]
         public async Task<IActionResult> AddToCart(int bookId, BookFormat format, bool isBorrow)
         {
-            var userId = _userManager.GetUserId(User);
-            if (string.IsNullOrEmpty(userId))
-            {
-                return Json(new { success = false, message = "User not authenticated" });
-            }
+            var userId = int.Parse(_userManager.GetUserId(User)!);
             var result = await _cartService.AddToCartAsync(userId, bookId, isBorrow, format);
+
             if (!result)
             {
                 return Json(new { success = false, message = "Failed to add the book to the cart" });
             }
 
             var cart = await _cartService.GetOrCreateCartAsync(userId);
-            return Json(new { success = true, message = "Book added to cart successfully", cartItemsCount = cart.Items.Count });
+            return Json(new
+            {
+                success = true,
+                message = "Book added to cart successfully",
+                cartItemsCount = cart.Items.Count
+            });
         }
 
         [HttpPost]
         public async Task<IActionResult> RemoveFromCart(int bookId)
         {
-            var userId = _userManager.GetUserId(User);
-            if (string.IsNullOrEmpty(userId))
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            var userId = int.Parse(_userManager.GetUserId(User)!);
             await _cartService.RemoveFromCartAsync(userId, bookId);
             return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
-public async Task<IActionResult> Checkout()
-{
-    var userId = _userManager.GetUserId(User);
-    if (string.IsNullOrEmpty(userId))
-        return RedirectToAction("Login", "Account");
+        public async Task<IActionResult> Checkout()
+        {
+            var userId = int.Parse(_userManager.GetUserId(User)!);
+            var cart = await _cartService.GetOrCreateCartAsync(userId);
 
-    var cart = await _cartService.GetOrCreateCartAsync(userId);
-    if (!cart.Items.Any())
-        return RedirectToAction(nameof(Index));
+            var checkoutViewModel = new CheckoutViewModel
+            {
+                Items = cart.Items,
+                CardDetails = new CreditCardDetails(),
+            };
 
-    var viewModel = new CheckoutViewModel
-    {
-        Items = cart.Items,
-        Total = cart.Total,
-        PaymentMethod = PaymentMethod.CreditCard,
-        CardDetails = new CreditCardDetails()
-    };
+            ViewBag.StripePublicKey = _configuration["Stripe:PublishableKey"];
+            return View(checkoutViewModel);
+        }
 
-    return View(viewModel);
-}
+        [HttpPost("checkout/test-payment")]
+        public async Task<IActionResult> TestPayment(string stripeToken, decimal amount)
+        {
+            try
+            {
+                var options = new ChargeCreateOptions
+                {
+                    Amount = (long)(amount * 100),
+                    Currency = "ils",
+                    Source = stripeToken,
+                    Description = "Test Payment"
+                };
 
-[HttpPost]
-public async Task<IActionResult> ProcessPayment(CheckoutViewModel model)
-{
-    var userId = _userManager.GetUserId(User);
-    if (userId == null)
-        return RedirectToAction("Login", "Account");
+                var service = new ChargeService();
+                var charge = await service.CreateAsync(options);
 
-    if (!ModelState.IsValid)
-        return View("Checkout", model);
+                if (charge.Status == "succeeded")
+                {
+                    return Json(new { success = true, message = "Payment Successful!" });
+                }
+                return Json(new { success = false, message = "Payment Failed!" });
+            }
+            catch (StripeException ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Borrow(int id, BookFormat format)
+        {
+            if (!User.Identity!.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
 
-    var cart = await _cartService.GetOrCreateCartAsync(userId);
-    if (!cart.Items.Any())
-        return RedirectToAction(nameof(Index));
+            var userIdString = _userManager.GetUserId(User);
+            if (userIdString == null)
+                return RedirectToAction("Login", "Account");
 
-    var paymentInfo = new PaymentInfo
-    {
-        UserId = userId,
-        CardNumber = model.CardDetails.CardNumber,
-        ExpiryMonth = model.CardDetails.ExpiryMonth,
-        ExpiryYear = model.CardDetails.ExpiryYear,
-        CVV = model.CardDetails.CVV,
-        CardHolderName = model.CardDetails.CardHolderName,
-        Amount = cart.Total,
-        Method = model.PaymentMethod,
-        Currency = "ILS",
-        Status = PaymentStatus.Pending
-    };
+            var userId = int.Parse(userIdString);
+            var result = await _cartService.AddToCartAsync(userId, id, true, format);
 
-    var success = await _cartService.ProcessCartAsync(userId, paymentInfo);
-    if (!success)
-    {
-        ModelState.AddModelError("", "אירעה שגיאה בעיבוד התשלום");
-        return View("Checkout", model);
+            if (result)
+                return RedirectToAction("Checkout", "Cart");
+
+            TempData["Error"] = "לא ניתן להוסיף את הספר לעגלה";
+            return RedirectToAction("Details", new { id });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Purchase(int id, BookFormat format)
+        {
+            if (!User.Identity!.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
+            var userIdString = _userManager.GetUserId(User);
+            if (userIdString == null)
+                return RedirectToAction("Login", "Account");
+
+            var userId = int.Parse(userIdString);
+            var result = await _cartService.AddToCartAsync(userId, id, false, format);
+
+            if (result)
+                return RedirectToAction("Checkout", "Cart");
+
+            TempData["Error"] = "לא ניתן להוסיף את הספר לעגלה";
+            return RedirectToAction("Details", new { id });
+        }
     }
-
-    // יצירת אישור תשלום
-    var confirmation = new PaymentConfirmationViewModel
-    {
-        Amount = cart.Total,
-        PurchasedItems = cart.Items.ToList(),
-        TransactionId = DateTime.Now.Ticks.ToString(),
-        PurchaseDate = DateTime.UtcNow
-    };
-
-    await _cartService.ClearCartAsync(userId);
-    
-    return View("PaymentConfirmation", confirmation);
 }
-       
-    }
 
-}
