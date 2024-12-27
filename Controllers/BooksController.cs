@@ -71,7 +71,7 @@ namespace MyEBookLibrary.Controllers
 
             var book = await _context.Books
                 .Include(b => b.Reviews)
-                    .ThenInclude(r => r.User)
+                    .ThenInclude(r => r.Reviewer)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (book == null)

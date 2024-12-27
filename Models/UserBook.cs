@@ -12,9 +12,9 @@ namespace MyEBookLibrary.Models
         public DateTime? BorrowDate { get; set; }
         public DateTime? ReturnDate { get; set; }
         public BookFormat Format { get; set; }
+        public bool IsReturned { get; set; }
 
-        public bool IsReturned => ReturnDate.HasValue;
-        public string UserName => User?.UserName ?? "Unknown";
+        public string? UserName => User?.UserName;
         public virtual User User { get; set; } = null!;
         public virtual Book Book { get; set; } = null!;
     }

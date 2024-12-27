@@ -108,5 +108,10 @@ namespace MyEBookLibrary.Services
         {
             throw new NotImplementedException();
         }
+
+        public Task SendOrderConfirmationAsync(string email, List<CartItem> cartItems, decimal total)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

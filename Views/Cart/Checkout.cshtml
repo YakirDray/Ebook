@@ -1,147 +1,342 @@
+@* Views/Cart/Checkout.cshtml *@
 @model MyEBookLibrary.ViewModels.Payment.CheckoutViewModel
+@{
+    ViewData["Title"] = "תשלום";
+}
 
-<!-- Add Stripe.js at the top -->
 <script src="https://js.stripe.com/v3/"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=@ViewBag.PayPalClientId&currency=ILS"></script>
 
-<div class="container mx-auto px-4 py-8">
+<div class="container mx-auto px-4 py-8" dir="rtl">
     <div class="max-w-4xl mx-auto">
         <h1 class="text-3xl font-bold mb-8">תשלום</h1>
-        
-        <!-- סיכום הזמנה -->
-        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
-            <h2 class="text-xl font-bold mb-4">סיכום הזמנה</h2>
-            <div class="space-y-4">
-                @foreach (var item in Model.Items)
+
+        @if (!Model.Items.Any())
+        {
+            <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-6">
+                <p>העגלה שלך ריקה</p>
+                <a href="@Url.Action("Index", "Books")" class="text-blue-600 hover:underline">המשך בקניות</a>
+            </div>
+        }
+        else
+        {
+            <!-- סיכום הזמנה -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                <h2 class="text-xl font-bold mb-4">סיכום הזמנה</h2>
+
+                <!-- פריטים להשאלה -->
+                @if (Model.Items.Any(i => i.IsBorrow))
                 {
-                    <div class="flex gap-4 border-b pb-4">
-                        <img src="@item.Book.CoverImageUrl" 
-                             alt="@item.Title"
-                             class="w-24 h-32 object-cover rounded-lg" />
-                        <div>
-                            <h3 class="font-semibold text-lg">@item.Title</h3>
-                            <p class="text-gray-600">@(item.IsBorrow ? "השאלה" : "רכישה")</p>
-                            <p class="text-gray-600">פורמט: @item.Format</p>
-                            <p class="text-blue-600 font-bold">₪@item.Subtotal</p>
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold mb-3">השאלות</h3>
+                        <div class="space-y-4">
+                            @foreach (var item in Model.Items.Where(i => i.IsBorrow))
+                            {
+                                <div class="flex gap-4 border-b pb-4">
+                                    <img src="@(string.IsNullOrEmpty(item.Book.CoverImageUrl) ? "/images/no-cover.png" : item.Book.CoverImageUrl)"
+                                        alt="@item.Title" class="w-24 h-32 object-cover rounded-lg shadow" />
+                                    <div class="flex-grow">
+                                        <h4 class="font-semibold text-lg">@item.Title</h4>
+                                        <p class="text-gray-600">פורמט: @item.Format</p>
+                                        <p class="text-gray-600">תקופת השאלה: 30 ימים</p>
+                                        <p class="text-blue-600 font-bold">₪@item.Price</p>
+                                    </div>
+                                </div>
+                            }
                         </div>
                     </div>
                 }
-            </div>
 
-            <div class="mt-6 text-right">
-                <p class="text-lg font-semibold">סה"כ פריטים: @Model.Items.Count</p>
-                <p class="text-xl font-bold text-blue-600">סה"כ לתשלום: ₪@Model.Total</p>
-            </div>
-        </div>
-
-        <!-- טופס תשלום -->
-        <form id="payment-form" asp-action="ProcessPayment" method="post">
-            <div class="bg-white rounded-lg shadow-lg p-6">
-                <h2 class="text-xl font-bold mb-6">פרטי תשלום</h2>
-                
-                <!-- אמצעי תשלום -->
-                <div class="mb-6">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">בחר אמצעי תשלום</label>
-                    <div class="grid grid-cols-3 gap-4">
-                        @foreach (PaymentMethod method in Enum.GetValues(typeof(PaymentMethod)))
-                        {
-                            <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50">
-                                <input type="radio" name="PaymentMethod" value="@method" 
-                                       checked="@(method == Model.PaymentMethod)"
-                                       class="hidden peer" />
-                                <div class="text-center peer-checked:text-blue-600">
-                                    @method.ToString()
+                <!-- פריטים לרכישה -->
+                @if (Model.Items.Any(i => !i.IsBorrow))
+                {
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold mb-3">רכישות</h3>
+                        <div class="space-y-4">
+                            @foreach (var item in Model.Items.Where(i => !i.IsBorrow))
+                            {
+                                <div class="flex gap-4 border-b pb-4">
+                                    <img src="@(string.IsNullOrEmpty(item.Book.CoverImageUrl) ? "/images/no-cover.png" : item.Book.CoverImageUrl)"
+                                        alt="@item.Title" class="w-24 h-32 object-cover rounded-lg shadow" />
+                                    <div class="flex-grow">
+                                        <h4 class="font-semibold text-lg">@item.Title</h4>
+                                        <p class="text-gray-600">פורמט: @item.Format</p>
+                                        @if (item.Book.OriginalPrice > item.Price)
+                                        {
+                                            <p class="text-gray-500 line-through">₪@item.Book.OriginalPrice</p>
+                                        }
+                                        <p class="text-blue-600 font-bold">₪@item.Price</p>
+                                    </div>
                                 </div>
-                            </label>
-                        }
+                            }
+                        </div>
+                    </div>
+                }
+
+                <!-- סיכום כספי -->
+                <div class="mt-6 text-right border-t pt-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-gray-600">סה"כ פריטים:</span>
+                        <span>@Model.Items.Count</span>
+                    </div>
+                    @if (Model.Discount > 0)
+                    {
+                        <div class="flex justify-between items-center mb-2 text-green-600">
+                            <span>הנחה:</span>
+                            <span>-₪@Model.Discount</span>
+                        </div>
+                    }
+                    @if (Model.ShowVAT)
+                    {
+                        <div class="flex justify-between items-center mb-2 text-gray-600">
+                            <span>מע"מ (17%):</span>
+                            <span>₪@Model.VAT</span>
+                        </div>
+                    }
+                    <div class="flex justify-between items-center text-xl font-bold text-blue-600 mt-4">
+                        <span>סה"כ לתשלום:</span>
+                        <span>₪@Model.Total</span>
                     </div>
                 </div>
+            </div>
 
-                <!-- Stripe Card Element -->
-                <div class="space-y-4">
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700">פרטי כרטיס אשראי</label>
-                        <div id="card-element" class="mt-1 block w-full rounded-md border-gray-300 p-3 border"></div>
-                        <div id="card-errors" role="alert" class="text-red-500 text-sm mt-2"></div>
-                    </div>
+        }
+        <form id="payment-form" asp-action="ProcessPayment" method="post" class="bg-white rounded-lg shadow-lg p-6">
+            @Html.AntiForgeryToken() <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">בחר אמצעי תשלום</label>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <label class="relative flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50">
+                        <input type="radio" name="PaymentMethod" value="CreditCard"
+                            checked="@(Model.PaymentMethod == PaymentMethod.CreditCard)"
+                            class="peer sr-only payment-method-radio" />
+                        <div class="w-full text-center peer-checked:text-blue-600">
+                            <span class="block">כרטיס אשראי</span>
+                        </div>
+                        <div class="absolute inset-0 rounded-lg ring-2 ring-transparent peer-checked:ring-blue-500">
+                        </div>
+                    </label>
+                    <label class="relative flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50">
+                        <input type="radio" name="PaymentMethod" value="PayPal"
+                            checked="@(Model.PaymentMethod == PaymentMethod.PayPal)"
+                            class="peer sr-only payment-method-radio" />
+                        <div class="w-full text-center peer-checked:text-blue-600">
+                            <span class="block">PayPal</span>
+                        </div>
+                        <div class="absolute inset-0 rounded-lg ring-2 ring-transparent peer-checked:ring-blue-500">
+                        </div>
+                    </label>
                 </div>
+            </div>
 
-                <!-- Hidden field for Stripe token -->
-                <input type="hidden" id="stripe-token" asp-for="CardDetails.StripeToken" />
-
-                <div class="mt-8">
-                    <button type="submit" class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700">
-                        שלם ₪@Model.Total
-                    </button>
+            <!-- תיבת כרטיס אשראי של Stripe -->
+            <div id="credit-card-section" class="space-y-4 payment-section">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">פרטי כרטיס אשראי</label>
+                    <div id="card-element" class="mt-1 block w-full rounded-md border-gray-300 p-3 border"></div>
+                    <div id="card-errors" role="alert" class="text-red-500 text-sm mt-2"></div>
                 </div>
+            </div>
+
+            <!-- PayPal Button Container -->
+            <div id="paypal-section" class="payment-section mb-4" style="display: none;">
+                <div id="paypal-button-container"></div>
+            </div>
+
+            <!-- אישור תנאי שימוש -->
+            <div class="flex items-center mt-4">
+                <input type="checkbox" asp-for="AcceptTerms" id="accept-terms"
+                    class="h-4 w-4 text-blue-600 rounded border-gray-300" />
+                <label asp-for="AcceptTerms" class="mr-2 text-sm text-gray-600">
+                    אני מאשר/ת את <a href="#" class="text-blue-600 hover:underline">תנאי השימוש</a>
+                </label>
+            </div>
+
+            <input type="hidden" id="stripe-token" name="StripeToken" />
+            <input type="hidden" id="paypal-order-id" name="PayPalOrderId" />
+
+            <!-- כפתור תשלום בכרטיס אשראי -->
+            <div id="credit-card-button" class="mt-8">
+                <button type="submit"
+                    class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled="@(!Model.AcceptTerms)">
+                    שלם ₪@Model.Total
+                </button>
             </div>
         </form>
-    </div>
-</div>
 
-@section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Stripe
-            var stripe = Stripe('@ViewBag.StripePublicKey');
-            var elements = stripe.elements();
+        @section Scripts {
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    // Elements
+                    const form = document.getElementById('payment-form');
+                    const errorElement = document.getElementById('card-errors');
+                    const submitButton = document.querySelector('button[type="submit"]');
+                    const paymentMethodRadios = document.querySelectorAll('.payment-method-radio');
+                    const creditCardSection = document.getElementById('credit-card-section');
+                    const paypalSection = document.getElementById('paypal-section');
+                    const creditCardButton = document.getElementById('credit-card-button');
+                    const termsCheckbox = document.getElementById('accept-terms');
 
-            // Create card element
-            var card = elements.create('card', {
-                style: {
-                    base: {
-                        fontSize: '16px',
-                        color: '#32325d',
-                        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                        '::placeholder': {
-                            color: '#aab7c4'
-                        }
-                    },
-                    invalid: {
-                        color: '#dc3545',
-                        iconColor: '#dc3545'
-                    }
-                },
-                hidePostalCode: true // Since you're using ILS currency
-            });
-
-            // Mount card element
-            var cardElement = document.getElementById('card-element');
-            if (cardElement) {
-                card.mount('#card-element');
-            }
-
-            // Handle form submission
-            var form = document.getElementById('payment-form');
-            if (form) {
-                form.addEventListener('submit', function(event) {
-                    event.preventDefault();
-
-                    stripe.createToken(card).then(function(result) {
-                        if (result.error) {
-                            // Handle errors
-                            var errorElement = document.getElementById('card-errors');
-                            if (errorElement) {
-                                errorElement.textContent = result.error.message;
+                    // Stripe initialization
+                    const stripe = Stripe('@ViewBag.StripePublicKey');
+                    const elements = stripe.elements({ locale: 'he' });
+                    const card = elements.create('card', {
+                        style: {
+                            base: {
+                                fontSize: '16px',
+                                color: '#32325d',
+                                fontFamily: '"Heebo", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                                '::placeholder': { color: '#aab7c4' }
+                            },
+                            invalid: {
+                                color: '#dc3545',
+                                iconColor: '#dc3545'
                             }
-                        } else {
-                            // Set the token and submit
-                            var tokenInput = document.getElementById('stripe-token');
-                            if (tokenInput) {
-                                tokenInput.value = result.token.id;
+                        },
+                        hidePostalCode: true
+                    });
+                    card.mount('#card-element');
+                    paypal.Buttons({
+                        fundingSource: paypal.FUNDING.PAYPAL,
+                        style: {
+                            layout: 'vertical',
+                            color: 'blue',
+                            shape: 'rect',
+                            label: 'pay'
+                        },
+                        createOrder: async function () {
+                            if (!termsCheckbox.checked) {
+                                alert('יש לאשר את תנאי השימוש');
+                                return;
+                            }
+
+                            try {
+                                const response = await fetch('@Url.Action("CreatePayPalOrder", "Cart")', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                                    }
+                                });
+
+                                if (!response.ok) {
+                                    const errorData = await response.json();
+                                    throw new Error(errorData.error || 'אירעה שגיאה ביצירת ההזמנה');
+                                }
+
+                                const data = await response.json();
+                                console.log('PayPal order response:', data); // לצורכי דיבוג
+
+                                if (!data.id) {
+                                    throw new Error('לא התקבל מזהה הזמנה מהשרת');
+                                }
+
+                                return data.id;
+                            } catch (error) {
+                                console.error('PayPal create order error:', error);
+                                alert(error.message);
+                                throw error; // חשוב להעביר את השגיאה הלאה
+                            }
+                        },
+                        onApprove: async function (data, actions) {
+                            try {
+                                console.log('PayPal onApprove data:', data); // לצורכי דיבוג
+
+                                const response = await fetch('@Url.Action("CapturePayPalOrder", "Cart")', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                                    },
+                                    body: JSON.stringify({
+                                        orderId: data.orderID
+                                    })
+                                });
+
+                                if (!response.ok) {
+                                    const errorData = await response.json();
+                                    throw new Error(errorData.error || 'אירעה שגיאה בעיבוד התשלום');
+                                }
+
+                                const result = await response.json();
+                                if (result.success) {
+                                    window.location.href = result.redirectUrl;
+                                } else {
+                                    throw new Error(result.error || 'אירעה שגיאה בעיבוד התשלום');
+                                }
+                            } catch (error) {
+                                console.error('PayPal capture error:', error);
+                                alert(error.message);
+                            }
+                        },
+                        onCancel: function (data) {
+                            console.log('Payment cancelled:', data);
+                            alert('התשלום בוטל');
+                        },
+                        onError: function (err) {
+                            console.error('PayPal error:', err);
+                            alert('אירעה שגיאה בתהליך התשלום');
+                        }
+                    }).render('#paypal-button-container');
+                    // Payment method selection handling
+                    paymentMethodRadios.forEach(radio => {
+                        radio.addEventListener('change', function () {
+                            const isCredit = this.value === 'CreditCard';
+                            creditCardSection.style.display = isCredit ? 'block' : 'none';
+                            paypalSection.style.display = isCredit ? 'none' : 'block';
+                            creditCardButton.style.display = isCredit ? 'block' : 'none';
+                        });
+                    });
+
+                    // Form submission handling for credit card
+                    form.addEventListener('submit', async function (event) {
+                        event.preventDefault();
+                        const selectedPaymentMethod = document.querySelector('input[name="PaymentMethod"]:checked').value;
+
+                        if (selectedPaymentMethod === 'CreditCard') {
+                            submitButton.disabled = true;
+
+                            try {
+                                const { token, error } = await stripe.createToken(card);
+
+                                if (error) {
+                                    errorElement.textContent = error.message;
+                                    submitButton.disabled = false;
+                                    return;
+                                }
+
+                                document.getElementById('stripe-token').value = token.id;
                                 form.submit();
+                            } catch (error) {
+                                errorElement.textContent = 'אירעה שגיאה בעיבוד התשלום. נא לנסות שוב.';
+                                submitButton.disabled = false;
                             }
                         }
                     });
-                });
-            }
 
-            // Handle real-time validation errors
-            card.addEventListener('change', function(event) {
-                var errorElement = document.getElementById('card-errors');
-                if (errorElement) {
-                    errorElement.textContent = event.error ? event.error.message : '';
-                }
-            });
-        });
-    </script>
-}
+                    // Card validation handling
+                    card.addEventListener('change', function (event) {
+                        if (event.error) {
+                            errorElement.textContent = event.error.message;
+                        } else {
+                            errorElement.textContent = '';
+                        }
+                    });
+
+                    // Terms checkbox handling
+                    if (termsCheckbox) {
+                        termsCheckbox.addEventListener('change', function () {
+                            if (document.querySelector('input[name="PaymentMethod"]:checked').value === 'CreditCard') {
+                                submitButton.disabled = !this.checked;
+                            }
+                        });
+                    }
+
+                    // Set initial payment method display
+                    const initialPaymentMethod = document.querySelector('input[name="PaymentMethod"]:checked').value;
+                    creditCardSection.style.display = initialPaymentMethod === 'CreditCard' ? 'block' : 'none';
+                    paypalSection.style.display = initialPaymentMethod === 'CreditCard' ? 'none' : 'block';
+                    creditCardButton.style.display = initialPaymentMethod === 'CreditCard' ? 'block' : 'none';
+                });
+            </script>
+        }

@@ -12,7 +12,7 @@ using MyEBookLibrary.Data;
 namespace MyEBookLibrary.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241226015926_InitialCreate")]
+    [Migration("20241226235629_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -238,23 +238,6 @@ namespace MyEBookLibrary.Migrations
                     b.ToTable("Books");
                 });
 
-            modelBuilder.Entity("MyEBookLibrary.Models.Book+ApplicationUser", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ApplicationUser");
-                });
-
             modelBuilder.Entity("MyEBookLibrary.Models.BookReview", b =>
                 {
                     b.Property<int>("Id")
@@ -288,8 +271,6 @@ namespace MyEBookLibrary.Migrations
                     b.HasIndex("BookId");
 
                     b.HasIndex("ReviewerId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("BookReviews");
                 });
@@ -476,6 +457,9 @@ namespace MyEBookLibrary.Migrations
                     b.Property<bool>("IsPurchased")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsReturned")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("ReturnDate")
                         .HasColumnType("datetime2");
 
@@ -488,7 +472,7 @@ namespace MyEBookLibrary.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserBook");
+                    b.ToTable("UserBooks", (string)null);
                 });
 
             modelBuilder.Entity("MyEBookLibrary.Models.WaitingListItem", b =>
@@ -588,17 +572,9 @@ namespace MyEBookLibrary.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MyEBookLibrary.Models.Book+ApplicationUser", "User")
-                        .WithMany("Reviews")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Book");
 
                     b.Navigation("Reviewer");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MyEBookLibrary.Models.CartItem", b =>
@@ -678,11 +654,6 @@ namespace MyEBookLibrary.Migrations
                     b.Navigation("UserBooks");
 
                     b.Navigation("WaitingList");
-                });
-
-            modelBuilder.Entity("MyEBookLibrary.Models.Book+ApplicationUser", b =>
-                {
-                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("MyEBookLibrary.Models.ShoppingCart", b =>

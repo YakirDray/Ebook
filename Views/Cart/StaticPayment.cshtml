@@ -1,0 +1,210 @@
+@* Views/Payment/StaticPayment.cshtml *@
+@model MyEBookLibrary.ViewModels.Payment.CheckoutViewModel
+@{
+    ViewData["Title"] = "תשלום";
+}
+
+<div class="container mx-auto px-4 py-8" dir="rtl">
+    <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-xl">
+        <!-- כותרת העמוד -->
+        <div class="p-6 border-b">
+            <h1 class="text-2xl font-bold text-gray-800">השלמת הרכישה</h1>
+            <p class="text-gray-600 mt-2">אנא מלא את הפרטים הבאים לסיום התהליך</p>
+        </div>
+
+        <!-- תוכן העמוד -->
+        <div class="p-6">
+            <!-- סיכום הזמנה -->
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold mb-4">פרטי ההזמנה</h2>
+                <div class="bg-gray-50 rounded-lg p-4">
+                    @foreach (var item in Model.Items)
+                    {
+                        <div class="flex items-center justify-between py-2 border-b last:border-0">
+                            <div class="flex items-center">
+                                <img src="@item.Book.CoverImageUrl" alt="@item.Title" 
+                                     class="w-12 h-16 object-cover rounded mr-4"/>
+                                <div>
+                                    <h3 class="font-medium">@item.Title</h3>
+                                    <p class="text-sm text-gray-600">
+                                        @(item.IsBorrow ? "השאלה" : "רכישה") | @item.Format
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-bold">₪@item.Price.ToString("N2")</p>
+                            </div>
+                        </div>
+                    }
+                    
+                    <!-- סיכום מחירים -->
+                    <div class="mt-4 pt-4 border-t">
+                        @if (Model.Discount > 0)
+                        {
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>הנחה:</span>
+                                <span class="text-green-600">-₪@Model.Discount.ToString("N2")</span>
+                            </div>
+                        }
+                        <div class="flex justify-between font-bold text-lg">
+                            <span>סה"כ לתשלום:</span>
+                            <span class="text-blue-600">₪@Model.Total.ToString("N2")</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- טופס תשלום -->
+            <form id="payment-form" method="post" asp-action="ProcessPayment">
+                @Html.AntiForgeryToken()
+
+                <!-- פרטי כרטיס אשראי -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold mb-4">פרטי תשלום</h2>
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label asp-for="CardDetails.CardHolderName" class="block text-sm font-medium text-gray-700 mb-1">
+                                    שם בעל הכרטיס
+                                </label>
+                                <input asp-for="CardDetails.CardHolderName" 
+                                       class="w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500"/>
+                                <span asp-validation-for="CardDetails.CardHolderName" class="text-red-500 text-sm"></span>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">
+                                    מספר כרטיס
+                                </label>
+                                <div id="card-number" class="h-10 p-2 border rounded-lg"></div>
+                                <div id="card-errors" class="text-red-500 text-sm mt-1"></div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">
+                                    תוקף
+                                </label>
+                                <div id="card-expiry" class="h-10 p-2 border rounded-lg"></div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">
+                                    קוד אבטחה
+                                </label>
+                                <div id="card-cvc" class="h-10 p-2 border rounded-lg"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- תנאי שימוש -->
+                <div class="mb-8">
+                    <label class="flex items-center">
+                        <input type="checkbox" asp-for="AcceptTerms" 
+                               class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"/>
+                        <span class="mr-2 text-sm text-gray-600">
+                            אני מאשר/ת את <a href="#" class="text-blue-600 hover:underline">תנאי השימוש</a>
+                        </span>
+                    </label>
+                    <span asp-validation-for="AcceptTerms" class="text-red-500 text-sm block mt-1"></span>
+                </div>
+
+                <!-- כפתור תשלום -->
+                <button type="submit" id="submit-button"
+                        class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 
+                               transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                    שלם ₪@Model.Total.ToString("N2")
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const stripe = Stripe('@ViewBag.StripePublicKey');
+            const elements = stripe.elements({
+                locale: 'he',
+                appearance: {
+                    theme: 'stripe',
+                    variables: {
+                        colorPrimary: '#2563eb',
+                        colorBackground: '#ffffff',
+                        colorText: '#1f2937',
+                        colorDanger: '#dc2626',
+                        fontFamily: 'system-ui, -apple-system, sans-serif',
+                        borderRadius: '0.5rem',
+                        fontSizeBase: '1rem'
+                    }
+                }
+            });
+
+            // יצירת שדות התשלום
+            const cardNumber = elements.create('cardNumber');
+            const cardExpiry = elements.create('cardExpiry');
+            const cardCvc = elements.create('cardCvc');
+
+            // הצגת שדות התשלום
+            cardNumber.mount('#card-number');
+            cardExpiry.mount('#card-expiry');
+            cardCvc.mount('#card-cvc');
+
+            // טיפול בשגיאות
+            const displayError = document.getElementById('card-errors');
+            const submitButton = document.getElementById('submit-button');
+
+            [cardNumber, cardExpiry, cardCvc].forEach(element => {
+                element.addEventListener('change', ({error}) => {
+                    if (error) {
+                        displayError.textContent = error.message;
+                    } else {
+                        displayError.textContent = '';
+                    }
+                });
+            });
+
+            // טיפול בשליחת הטופס
+            const form = document.getElementById('payment-form');
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                submitButton.disabled = true;
+
+                try {
+                    const {token, error} = await stripe.createToken(cardNumber);
+                    if (error) {
+                        displayError.textContent = error.message;
+                        submitButton.disabled = false;
+                        return;
+                    }
+
+                    // שליחת הטוקן לשרת
+                    const response = await fetch('/Cart/ProcessPayment', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                        },
+                        body: JSON.stringify({
+                            stripeToken: token.id
+                        })
+                    });
+
+                    const result = await response.json();
+                    if (result.success) {
+                        window.location.href = result.redirectUrl;
+                    } else {
+                        displayError.textContent = result.message;
+                        submitButton.disabled = false;
+                    }
+                } catch (error) {
+                    displayError.textContent = 'אירעה שגיאה בעיבוד התשלום. נא לנסות שוב.';
+                    submitButton.disabled = false;
+                }
+            });
+        });
+    </script>
+}

@@ -40,13 +40,6 @@ namespace MyEBookLibrary.Models
         {
             return (DiscountEndDate.HasValue && DiscountEndDate.Value > DateTime.Now) ? DiscountedPrice : BuyPrice;
         }
-        public class ApplicationUser
-        {
-            [Key] // Data Annotation for specifying 'Id' as the primary key
-            public int Id { get; set; }
-            public virtual List<BookReview> Reviews { get; set; } = new List<BookReview>();
-            public required string UserName { get; set; }
-
-        }
+       
     }
 }

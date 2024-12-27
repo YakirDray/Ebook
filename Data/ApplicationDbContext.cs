@@ -40,22 +40,25 @@ namespace MyEBookLibrary.Data
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
-           modelBuilder.Entity<UserBook>(entity =>
-        {
-            entity.ToTable("UserBooks");  // מגדיר את שם הטבלה
+            modelBuilder.Entity<UserBook>(entity =>
+         {
+             entity.ToTable("UserBooks");  // מגדיר את שם הטבלה
 
-            entity.HasOne(ub => ub.User)
-                .WithMany(u => u.Books)
-                .HasForeignKey(ub => ub.UserId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+             entity.HasOne(ub => ub.User)
+                 .WithMany(u => u.Books)
+                 .HasForeignKey(ub => ub.UserId)
+                 .IsRequired()
+                 .OnDelete(DeleteBehavior.Cascade);
 
-            entity.HasOne(ub => ub.Book)
-                .WithMany(b => b.UserBooks)
-                .HasForeignKey(ub => ub.BookId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
-        });
+             entity.HasOne(ub => ub.Book)
+                 .WithMany(b => b.UserBooks)
+                 .HasForeignKey(ub => ub.BookId)
+                 .IsRequired()
+                 .OnDelete(DeleteBehavior.Cascade);
+
+
+           
+         });
 
             // WaitingList relationships
             modelBuilder.Entity<WaitingListItem>(entity =>

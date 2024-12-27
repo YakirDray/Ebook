@@ -25,7 +25,7 @@ namespace MyEBookLibrary.Models
         public required User Reviewer { get; set; } // התאמת המפתח הזר
 
         public virtual Book Book { get; set; } = null!;
-        public virtual ApplicationUser User { get; set; } = null!;
+       
     }
 
 

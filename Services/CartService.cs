@@ -91,6 +91,54 @@ namespace MyEBookLibrary.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task<int> GetActiveUserBorrowsCountAsync(int userId)
+        {
+            return await _context.UserBooks
+                .CountAsync(ub =>
+                    ub.UserId == userId &&
+                    ub.IsBorrowed &&
+                    !ub.ReturnDate.HasValue);
+        }
+
+        public async Task<int> GetAvailableCopiesCountAsync(int bookId)
+        {
+            var totalBorrowed = await _context.UserBooks
+                .CountAsync(ub =>
+                    ub.BookId == bookId &&
+                    ub.IsBorrowed &&
+                    !ub.ReturnDate.HasValue);
+
+            // מקסימום 3 עותקים להשאלה
+            return Math.Max(0, 3 - totalBorrowed);
+        }
+
+        public async Task<bool> ValidateCartAsync(int userId)
+        {
+            var cart = await GetOrCreateCartAsync(userId);
+            var borrowItems = cart.Items.Where(i => i.IsBorrow).ToList();
+
+            // בדיקת מגבלת השאלות למשתמש
+            if (borrowItems.Any())
+            {
+                var currentBorrows = await GetActiveUserBorrowsCountAsync(userId);
+                if (currentBorrows + borrowItems.Count > 3)
+                {
+                    return false;
+                }
+            }
+
+            // בדיקת זמינות ספרים
+            foreach (var item in borrowItems)
+            {
+                var availableCopies = await GetAvailableCopiesCountAsync(item.BookId);
+                if (availableCopies <= 0)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
         public async Task<bool> ProcessCartAsync(int userId, PaymentInfo paymentInfo)
         {
             if (paymentInfo?.StripeToken == null)
@@ -166,7 +214,7 @@ namespace MyEBookLibrary.Services
 
             var cart = await GetOrCreateCartAsync(userId);
             var item = cart.Items.FirstOrDefault(i => i.BookId == bookId);
-            
+
             if (item == null) return false;
 
             if (quantity == 0)
@@ -214,5 +262,77 @@ namespace MyEBookLibrary.Services
             var cart = await GetOrCreateCartAsync(userId);
             return cart.Items.FirstOrDefault(i => i.BookId == bookId);
         }
+
+        public Task<decimal> GetDiscountedTotalAsync(int userId, string? promoCode = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<decimal> CalculateVATAsync(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<PaymentResult> ICartService.ProcessCartAsync(int userId, PaymentInfo paymentInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> ValidateCartItemsAsync(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> CancelOrderAsync(int userId, string reason)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> ValidateBorrowLimitAsync(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> CheckBookAvailabilityAsync(int bookId, bool isBorrow)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> ValidateFormatAvailabilityAsync(int bookId, BookFormat format)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> SaveCartForLaterAsync(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> RestoreSavedCartAsync(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> MergeCartsAsync(int sourceUserId, int targetUserId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<CartSummary> GetCartSummaryAsync(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<CartAuditLog>> GetCartHistoryAsync(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<OrderEstimate> GetOrderEstimateAsync(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+   
     }
 }

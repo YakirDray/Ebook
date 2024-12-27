@@ -29,10 +29,11 @@ public class PaymentInfo
 
     [Required]
     public string Currency { get; set; } = "ILS";
-    public required string StripeToken { get; set; }
+    public required string? StripeToken { get; set; }
 
     public PaymentMethod Method { get; set; }
     public PaymentStatus Status { get; set; }
+    public string? PayPalOrderId { get; internal set; }
 
 }
 

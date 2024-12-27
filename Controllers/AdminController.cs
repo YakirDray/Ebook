@@ -6,21 +6,23 @@ using MyEBookLibrary.Data;
 using MyEBookLibrary.Models;
 using MyEBookLibrary.ViewModels;
 using MyEBookLibrary.Services.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace MyEBookLibrary.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class AdminController(
-
         ApplicationDbContext context,
         UserManager<User> userManager,
         IEmailNotificationService emailService,
-        ILibraryService libraryService) : Controller
+        ILibraryService libraryService,
+        ILogger<AdminController> logger) : Controller
     {
         private readonly ApplicationDbContext _context = context;
         private readonly UserManager<User> _userManager = userManager;
         private readonly IEmailNotificationService _emailService = emailService;
         private readonly ILibraryService _libraryService = libraryService;
+        private readonly ILogger<AdminController> _logger = logger;
 
         public async Task<IActionResult> Index()
         {
@@ -73,12 +75,33 @@ namespace MyEBookLibrary.Controllers
         [HttpGet]
         public async Task<IActionResult> ManageBooks()
         {
-            var books = await _context.Books
-                .Include(b => b.UserBooks)
-                .Include(b => b.Reviews)
-                .OrderByDescending(b => b.Title)
-                .ToListAsync();
-            return View(books);
+            try
+            {
+                var books = await _context.Books
+                    .AsNoTracking()
+                    .Select(b => new Book
+                    {
+                        Id = b.Id,
+                        Title = b.Title,
+                        Author = b.Author,
+                        AvailableCopies = b.AvailableCopies,
+                        Description = b.Description,
+                        Genre = b.Genre,
+                        IsAvailable = b.IsAvailable,
+                        BuyPrice = b.BuyPrice,
+                        BorrowPrice = b.BorrowPrice,
+                        // Add other properties you need
+                    })
+                    .OrderByDescending(b => b.Title)
+                    .ToListAsync();
+
+                return View(books);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving books: {Message}", ex.Message);
+                return View(new List<Book>()); // Return empty list if there's an error
+            }
         }
 
         [HttpGet]

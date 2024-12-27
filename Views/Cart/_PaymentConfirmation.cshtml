@@ -1,47 +1,111 @@
+@using Microsoft.CodeAnalysis.Differencing
+@* Views/Cart/PaymentConfirmation.cshtml *@
 @model PaymentConfirmationViewModel
+@{
+    ViewData["Title"] = "אישור תשלום";
+}
 
-<div class="payment-confirmation">
-    <h1>תודה על הרכישה!</h1>
-    <p>סכום: ₪@Model.Amount</p>
-    <p>מספר עסקה: @Model.TransactionId</p>
-    <p>תאריך רכישה: @Model.PurchaseDate.ToString("dd/MM/yyyy")</p>
+<div class="container mx-auto px-4 py-8" dir="rtl">
+    <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8">
+        <div class="text-center mb-8">
+            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">תודה על הרכישה!</h1>
+            <p class="text-gray-600">ההזמנה שלך התקבלה בהצלחה</p>
+        </div>
 
-    <h2>פריטים שנרכשו:</h2>
-    <ul>
-        @foreach (var item in Model.PurchasedItems)
+        <div class="border-t border-b py-4 mb-6">
+            <div class="flex justify-between mb-2">
+                <span class="text-gray-600">מספר הזמנה:</span>
+                <span class="font-medium">@Model.TransactionId</span>
+            </div>
+            <div class="flex justify-between mb-2">
+                <span class="text-gray-600">תאריך:</span>
+                <span class="font-medium">@Model.PurchaseDate.ToString("dd/MM/yyyy HH:mm")</span>
+            </div>
+            <div class="flex justify-between">
+                <span class="text-gray-600">סכום כולל:</span>
+                <span class="font-bold text-lg">₪@Model.Amount</span>
+            </div>
+        </div>
+
+        <div class="mb-8">
+            <h2 class="text-xl font-bold mb-4">פירוט ההזמנה</h2>
+            <div class="space-y-4">
+                @foreach (var item in Model.PurchasedItems)
+                {
+                    <div class="flex justify-between items-center border-b pb-4">
+                        <div>
+                            <h3 class="font-medium">@item.Title</h3>
+                            <p class="text-sm text-gray-600">
+                                @(item.IsBorrow ? "השאלה" : "רכישה") | 
+                                פורמט: @item.Format
+                            </p>
+                            @if (item.IsBorrow)
+                            {
+                                <p class="text-sm text-gray-600">
+                                    תאריך החזרה: @DateTime.Now.AddDays(30).ToString("dd/MM/yyyy")
+                                </p>
+                            }
+                        </div>
+                        <span class="font-medium">₪@item.Price</span>
+                    </div>
+                }
+            </div>
+        </div>
+
+        @if (Model.DownloadLinks.Any())
         {
-            <li>@item.Title - ₪@item.Price</li>
+            <div class="mb-8">
+                <h2 class="text-xl font-bold mb-4">הורדת ספרים</h2>
+                <div class="space-y-2">
+                    @foreach (var link in Model.DownloadLinks)
+                    {
+                        <a href="@link" 
+                        class="block w-full text-center bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                            הורד ספר
+                        </a>
+                    }
+                </div>
+            </div>
         }
-    </ul>
+
+        <div class="text-center">
+            <a href="@Url.Action("Index", "Books")" 
+            class="inline-block bg-gray-100 text-gray-700 py-3 px-6 rounded-lg hover:bg-gray-200 transition-colors">
+                המשך בקניות
+            </a>
+
+            <a href="@Url.Action("MyBooks", "Library")" 
+            class="inline-block bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors mr-4">
+                לספרייה שלי
+            </a>
+        </div>
+
+        @if (Model.PurchasedItems.Any(i => i.IsBorrow))
+        {
+            <div class="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <h3 class="text-lg font-semibold text-blue-800 mb-2">מידע חשוב על השאלות</h3>
+                <ul class="text-blue-700 space-y-2">
+                    <li>• ספרים מושאלים יהיו זמינים למשך 30 ימים</li>
+                    <li>• תישלח תזכורת 5 ימים לפני מועד ההחזרה</li>
+                    <li>• ניתן להאריך את תקופת ההשאלה דרך 'הספרייה שלי'</li>
+                </ul>
+            </div>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.ReceiptUrl))
+        {
+            <div class="mt-6 text-center">
+                <a href="@Model.ReceiptUrl" target="_blank"
+                class="text-blue-600 hover:underline">
+                    הורד חשבונית
+                </a>
+            </div>
+        }
+    </div>
 </div>
 
-<style>
-.payment-confirmation {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 2rem;
-    background: #f8f9fa;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.payment-confirmation h1 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-}
-
-.payment-confirmation p {
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
-}
-
-.payment-confirmation ul {
-    list-style: none;
-    padding: 0;
-}
-
-.payment-confirmation li {
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
-}
-</style>

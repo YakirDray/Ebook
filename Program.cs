@@ -15,7 +15,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Configure Stripe
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
 StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
-
 builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
 {
     options.Password.RequireDigit = true;
@@ -33,8 +32,12 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddApplicationInsightsTelemetry();
 builder.Services.AddScoped<ICartService, CartService>();
 
-var app = builder.Build();
+builder.Services.AddHttpClient("PayPal", client =>
+{
+    client.BaseAddress = new Uri("https://api-m.sandbox.paypal.com/"); // Use sandbox URL for testing
+});
 
+var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -98,6 +101,7 @@ using (var scope = app.Services.CreateScope())
             var logger = services.GetRequiredService<ILogger<Program>>();
             logger.LogInformation($"Stripe API Key configured: {!string.IsNullOrEmpty(StripeConfiguration.ApiKey)}");
         }
+        
     }
     catch (Exception ex)
     {
