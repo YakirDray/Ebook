@@ -36,20 +36,21 @@
     <!-- Quick Links -->
     <section class="quick-links text-center my-20">
         <h2 class="text-3xl font-bold">קישורים מהירים</h2>
-        <div class="links-grid grid grid-cols-4 gap-4 mt-8">
+        <nav class="links-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-8">
             <a href="@Url.Action("New", "Books")"
-                class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">ספרים
-                חדשים</a>
+                class="bg-blue-500 text-white py-3 px-5 rounded hover:bg-blue-600 focus:bg-blue-600 transition duration-300 shadow-md hover:shadow-lg"
+                aria-label="Browse new books">ספרים חדשים</a>
             <a href="@Url.Action("Popular", "Books")"
-                class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">הפופולריים
-                ביותר</a>
+                class="bg-blue-500 text-white py-3 px-5 rounded hover:bg-blue-600 focus:bg-blue-600 transition duration-300 shadow-md hover:shadow-lg"
+                aria-label="Browse popular books">הפופולריים ביותר</a>
             <a href="@Url.Action("Genres", "Books")"
-                class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">ז'אנרים</a>
+                class="bg-blue-500 text-white py-3 px-5 rounded hover:bg-blue-600 focus:bg-blue-600 transition duration-300 shadow-md hover:shadow-lg"
+                aria-label="Browse by genre">ז'אנרים</a>
             <a href="@Url.Action("Index", "Cart")"
-                class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300">
-                לעגלת הקניות
-            </a>
-        </div>
+                class="bg-green-500 text-white py-3 px-5 rounded hover:bg-green-600 focus:bg-green-600 transition duration-300 shadow-md hover:shadow-lg"
+                aria-label="Go to shopping cart">לעגלת הקניות</a>
+        </nav>
     </section>
+
 
 </div>

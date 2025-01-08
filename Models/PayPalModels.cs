@@ -1,5 +1,6 @@
 // Models/PayPalModels.cs
 using System.Text.Json.Serialization;
+using MyEBookLibrary.Controllers;
 
 namespace MyEBookLibrary.Models
 {
@@ -9,7 +10,7 @@ namespace MyEBookLibrary.Models
         public string Intent { get; set; } = "CAPTURE";
 
         [JsonPropertyName("purchase_units")]
-        public List<PurchaseUnit> PurchaseUnits { get; set; } = new();
+        public List<PurchaseUnit> PurchaseUnits { get; set; } = [];
 
         [JsonPropertyName("application_context")]
         public ApplicationContext ApplicationContext { get; set; } = new();
@@ -91,6 +92,8 @@ namespace MyEBookLibrary.Models
 
         [JsonPropertyName("shipping_preference")]
         public string ShippingPreference { get; set; } = "NO_SHIPPING";
+        public CartController.PayPalPaymentMethod? PaymentMethod { get; internal set; }
+        public CartController.PayPalExperienceContext? ExperienceContext { get; internal set; }
     }
 
     public class PayPalOrderResponse

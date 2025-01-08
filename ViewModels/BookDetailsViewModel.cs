@@ -10,6 +10,6 @@ namespace MyEBookLibrary.ViewModels
         public bool IsBorrowed { get; set; }
         public bool IsPurchased { get; set; }
         public bool IsInWaitingList { get; set; }
-        public List<BookFormat> AvailableFormats => Book?.AvailableFormats ?? new List<BookFormat>();
+        public List<BookFormat> AvailableFormats => Book?.AvailableFormats ?? [];
     }
 }

@@ -34,7 +34,7 @@ builder.Services.AddScoped<ICartService, CartService>();
 
 builder.Services.AddHttpClient("PayPal", client =>
 {
-    client.BaseAddress = new Uri("https://api-m.sandbox.paypal.com/"); // Use sandbox URL for testing
+    client.BaseAddress = new Uri("https://api-m.sandbox.paypal.com/");
 });
 
 var app = builder.Build();
@@ -101,7 +101,7 @@ using (var scope = app.Services.CreateScope())
             var logger = services.GetRequiredService<ILogger<Program>>();
             logger.LogInformation($"Stripe API Key configured: {!string.IsNullOrEmpty(StripeConfiguration.ApiKey)}");
         }
-        
+
     }
     catch (Exception ex)
     {

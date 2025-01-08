@@ -27,7 +27,7 @@
                             ספרייה דיגיטלית
                         </a>
                     </div>
-                     
+
 
                     <!-- Add this to the navbar in _Layout.cshtml -->
                     <div class="flex items-center">
@@ -58,7 +58,7 @@
                             asp-controller="Home" asp-action="Index">דף הבית</a>
                         <a class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
                             asp-controller="Books" asp-action="Index">ספרים</a>
-                              <a asp-controller="Cart" asp-action="Index"
+                        <a asp-controller="Cart" asp-action="Index"
                             class="relative flex items-center text-gray-700 hover:text-gray-900">
                             <i class="fas fa-shopping-cart text-2xl"></i>
                             <span id="cart-count"
@@ -66,6 +66,13 @@
                                 @ViewData["CartCount"]
                             </span>
                         </a>
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <a class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+                                asp-controller="Borrow" asp-action="MyBorrows">
+                                הספרים המושאלים שלי
+                            </a>
+                        }
                     </div>
                 </div>
             </div>

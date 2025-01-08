@@ -1,5 +1,5 @@
 // Models/ErrorViewModel.cs
-namespace MyEBookLibrary.Models
+namespace MyEBookLibrary.ViewModels
 {
     public class ErrorViewModel
     {

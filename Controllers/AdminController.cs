@@ -2,11 +2,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MyEBookLibrary.Data;
 using MyEBookLibrary.Models;
 using MyEBookLibrary.ViewModels;
 using MyEBookLibrary.Services.Interfaces;
-using Microsoft.Extensions.Logging;
+using MyEBookLibrary.Data;
 
 namespace MyEBookLibrary.Controllers
 {
@@ -56,7 +55,7 @@ namespace MyEBookLibrary.Controllers
                     TotalSpent = user.Transactions.Sum(t => t.Amount)
                 }).ToListAsync();
 
-            return View("UserList", users);  // טוען תצוגה בשם UserList.cshtml
+            return View("ManageUsers", users);
         }
 
 
@@ -260,14 +259,15 @@ namespace MyEBookLibrary.Controllers
                 .Select(u => new UserManagementViewModel
                 {
                     Id = u.Id.ToString(),
-                    UserName = u.UserName!,
-                    Email = u.Email!,
+                    UserName = u.UserName ?? "לא ידוע",
+                    Email = u.Email ?? "No Email",
                     BorrowedBooksCount = u.Books.Count(b => b.IsBorrowed),
+                    PurchasedBooksCount = u.Books.Count(b => b.IsPurchased),
                     IsLocked = u.LockoutEnd != null && u.LockoutEnd > DateTimeOffset.UtcNow
                 })
                 .ToListAsync();
 
-            return View(users);  // נוודא שה-View תואם לרשימת המשתמשים
+            return View(users);
         }
 
 

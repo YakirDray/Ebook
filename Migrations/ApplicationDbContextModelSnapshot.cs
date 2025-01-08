@@ -445,6 +445,10 @@ namespace MyEBookLibrary.Migrations
                     b.Property<DateTime?>("BorrowDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<decimal>("BuyPrice")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18, 2)");
+
                     b.Property<int>("Format")
                         .HasColumnType("int");
 

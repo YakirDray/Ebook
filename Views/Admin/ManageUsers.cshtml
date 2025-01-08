@@ -11,15 +11,13 @@
         font-family: 'Heebo', sans-serif;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         border-radius: 12px;
-        overflow: hidden;
-    ">
+        overflow: hidden;">
         <thead>
             <tr style="background: linear-gradient(135deg, #1e90ff, #007bff); color: white;">
                 <th style="padding: 18px; text-align: center;">שם משתמש</th>
                 <th style="padding: 18px; text-align: center;">אימייל</th>
                 <th style="padding: 18px; text-align: center;">ספרים מושאלים</th>
                 <th style="padding: 18px; text-align: center;">ספרים שנרכשו</th>
-                <th style="padding: 18px; text-align: center;">סה"כ הוצאות</th>
                 <th style="padding: 18px; text-align: center;">סטטוס</th>
             </tr>
         </thead>
@@ -28,14 +26,12 @@
             {
                 <tr style="
                     background-color: @(user.IsLocked ? "#ffeeee" : "#eeffee");
-                    transition: all 0.3s ease;
-                    " onmouseover="this.style.backgroundColor='#f1f1f1';"
+                    transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='#f1f1f1';"
                     onmouseout="this.style.backgroundColor='@(user.IsLocked ? "#ffeeee" : "#eeffee")';">
                     <td style="padding: 16px; text-align: center; font-weight: 500; color: #333;">@user.UserName</td>
                     <td style="padding: 16px; text-align: center; color: #666;">@user.Email</td>
                     <td style="padding: 16px; text-align: center; color: #444;">@user.BorrowedBooksCount</td>
                     <td style="padding: 16px; text-align: center; color: #444;">@user.PurchasedBooksCount</td>
-                    <td style="padding: 16px; text-align: center; font-weight: bold; color: #333;">₪@user.TotalSpent</td>
                     <td style="padding: 16px; text-align: center;">
                         @if (user.IsLocked)
                         {
@@ -44,8 +40,7 @@
                                 color: white;
                                 padding: 8px 20px;
                                 border-radius: 20px;
-                                font-weight: bold;
-                                    ">חסום</span>
+                                font-weight: bold;">חסום</span>
                         }
                         else
                         {
@@ -54,8 +49,7 @@
                                 color: white;
                                 padding: 8px 20px;
                                 border-radius: 20px;
-                                font-weight: bold;
-                                    ">פעיל</span>
+                                font-weight: bold;">פעיל</span>
                         }
                     </td>
                 </tr>

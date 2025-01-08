@@ -6,18 +6,12 @@ using MyEBookLibrary.ViewModels;
 
 namespace MyEBookLibrary.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController(
+        UserManager<User> userManager,
+        SignInManager<User> signInManager) : Controller
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
-
-        public AccountController(
-            UserManager<User> userManager,
-            SignInManager<User> signInManager)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
-        }
+        private readonly UserManager<User> _userManager = userManager;
+        private readonly SignInManager<User> _signInManager = signInManager;
 
         [HttpGet]
         public IActionResult Register()

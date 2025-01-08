@@ -59,8 +59,8 @@ namespace MyEBookLibrary.Services.Interfaces
         public decimal VAT { get; set; }
         public decimal Total { get; set; }
         public bool HasBorrowLimitReached { get; set; }
-        public List<string> Warnings { get; set; } = new();
-        public Dictionary<string, decimal> Breakdowns { get; set; } = new();
+        public List<string> Warnings { get; set; } = [];
+        public Dictionary<string, decimal> Breakdowns { get; set; } = [];
     }
 
     public class OrderEstimate
@@ -71,8 +71,8 @@ namespace MyEBookLibrary.Services.Interfaces
         public decimal Total { get; set; }
         public string Currency { get; set; } = "ILS";
         public DateTime EstimatedDeliveryDate { get; set; }
-        public List<OrderEstimateItem> Items { get; set; } = new();
-        public List<string> AppliedDiscounts { get; set; } = new();
+        public List<OrderEstimateItem> Items { get; set; } = [];
+        public List<string> AppliedDiscounts { get; set; } = [];
     }
 
     public class OrderEstimateItem

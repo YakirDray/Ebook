@@ -1,0 +1,151 @@
+@model IEnumerable<MyEBookLibrary.ViewModels.BorrowHistoryViewModel>
+
+<div class="container mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold">ניהול השאלות</h1>
+        <div class="text-gray-600">
+            סה"כ השאלות: @Model.Count()
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="bg-white rounded-lg shadow p-6 text-center">
+            <p class="text-gray-600 mb-4">אין השאלות פעילות כרגע במערכת.</p>
+            <a href="@Url.Action("Index", "Books")"
+                class="inline-block bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                עבור לרשימת הספרים
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">משתמש
+                        </th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">ספר</th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">תאריך
+                            השאלה</th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">תאריך
+                            החזרה צפוי</th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">סטטוס
+                        </th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">פורמט
+                        </th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">פעולות
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">@item.UserName</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center">
+                                    @if (!string.IsNullOrEmpty(item.CoverImageUrl))
+                                    {
+                                        <img src="@item.CoverImageUrl" alt="@item.BookTitle"
+                                            class="h-10 w-8 object-cover rounded mr-3" />
+                                    }
+                                    <div>
+                                        <div class="text-sm font-medium text-gray-900">@item.BookTitle</div>
+                                        <div class="text-sm text-gray-500">@item.Author</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">@item.BorrowDate.ToString("dd/MM/yyyy")</div>
+                                <div class="text-xs text-gray-500">@item.BorrowDate.ToString("HH:mm")</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">@item.DueDate.ToString("dd/MM/yyyy")</div>
+                                <div class="text-xs text-gray-500">
+                                    @if (item.DaysRemaining > 0)
+                                    {
+                                        <span>נותרו @item.DaysRemaining ימים</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-red-500">באיחור של @Math.Abs(item.DaysRemaining) ימים</span>
+                                    }
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                @{
+                                    var statusColor = "green-100 text-green-800";
+                                    var statusText = "פעיל";
+
+                                    if (item.IsLate)
+                                    {
+                                        statusColor = "red-100 text-red-800";
+                                        statusText = "באיחור";
+                                    }
+                                    else if (item.DaysRemaining <= 5)
+                                    {
+                                        statusColor = "yellow-100 text-yellow-800";
+                                        statusText = "להחזרה בקרוב";
+                                    }
+                                }
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-@statusColor">
+                                    @statusText
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                @item.Format
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-left">
+                                <form asp-controller="Borrow" asp-action="Return" method="post" class="inline">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@item.BorrowId" />
+                                    <button type="submit" class="text-blue-600 hover:text-blue-900">
+                                        החזרה
+                                    </button>
+                                </form>
+                                @if (!item.IsLate && !item.IsReturned)
+                                {
+                                    <form asp-controller="Borrow" asp-action="Extend" method="post" class="inline mr-2">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@item.BorrowId" />
+                                        <button type="submit" class="text-green-600 hover:text-green-900">
+                                            הארכה
+                                        </button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Confirm return action
+            document.querySelectorAll('form[asp-action="Return"]').forEach(form => {
+                form.addEventListener('submit', function (e) {
+                    if (!confirm('האם אתה בטוח שברצונך לסמן ספר זה כמוחזר?')) {
+                        e.preventDefault();
+                    }
+                });
+            });
+
+            // Confirm extend action
+            document.querySelectorAll('form[asp-action="Extend"]').forEach(form => {
+                form.addEventListener('submit', function (e) {
+                    if (!confirm('האם אתה בטוח שברצונך להאריך את תקופת ההשאלה?')) {
+                        e.preventDefault();
+                    }
+                });
+            });
+        });
+    </script>
+}

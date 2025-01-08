@@ -15,28 +15,28 @@ namespace MyEBookLibrary.ViewModels
 
         public decimal TotalRevenue { get; set; }
         public int TotalReviews { get; set; }
-        public List<Book> PopularBooks { get; set; } = new();
+        public List<Book> PopularBooks { get; set; } = [];
 
         // ספרים שהוחזרו
-        public List<Book> ReturnedBooks { get; set; } = new();
+        public List<Book> ReturnedBooks { get; set; } = [];
 
         // תאריכי החזרה צפויים
-        public List<DateTime> ReturnDueDates { get; set; } = new();
+        public List<DateTime> ReturnDueDates { get; set; } = [];
 
         // ספרים עם איחור
-        public List<Book> LateReturns { get; set; } = new();
+        public List<Book> LateReturns { get; set; } = [];
 
         // קנסות על החזרות מאוחרות
         public decimal TotalFines { get; set; }
 
         // סטטוס השאלה
         public bool BorrowLimitExceeded { get; set; }
-        public List<WaitingListItem> RecentWaitingList { get; set; } = new();
+        public List<WaitingListItem> RecentWaitingList { get; set; } = [];
         // תוספת: ספרים שההחזרה שלהם צפויה ב-7 הימים הקרובים
-        public List<BorrowHistoryViewModel> UpcomingReturns { get; set; } = new();
+        public List<BorrowHistoryViewModel> UpcomingReturns { get; set; } = [];
 
         // תוספת: משתמשים שהגיעו לגבול השאלות שלהם
-        public List<UserManagementViewModel> UsersNearBorrowLimit { get; set; } = new();
+        public List<UserManagementViewModel> UsersNearBorrowLimit { get; set; } = [];
     }
 
   
@@ -63,7 +63,7 @@ namespace MyEBookLibrary.ViewModels
         public int BorrowedBooksCount { get; set; }
         public int PurchasedBooksCount { get; set; }
         public decimal TotalSpent { get; set; }
-        public List<UserBook> RecentActivity { get; set; } = new();
+        public List<UserBook> RecentActivity { get; set; } = [];
     }
 
     public class BookStatsViewModel

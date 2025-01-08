@@ -31,7 +31,7 @@ namespace MyEBookLibrary.Models
 
         [Required]
         public int UserId { get; set; }
-        public List<CartItem> Items { get; set; } = new();
+        public List<CartItem> Items { get; set; } = [];
 
         [NotMapped]
         public decimal Total => Items.Sum(item => item.Subtotal);

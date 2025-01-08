@@ -6,13 +6,8 @@ using MyEBookLibrary.Models;
 
 namespace MyEBookLibrary.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<User, IdentityRole<int>, int>
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<User, IdentityRole<int>, int>(options)
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
-        {
-        }
-
         public DbSet<Book> Books { get; set; } = null!;
         public DbSet<UserBook> UserBooks { get; set; } = null!;
         public DbSet<WaitingListItem> WaitingList { get; set; } = null!;
@@ -20,7 +15,7 @@ namespace MyEBookLibrary.Data
         public DbSet<ShoppingCart> ShoppingCarts { get; set; } = null!;
         public DbSet<CartItem> CartItems { get; set; } = null!;
         public DbSet<Transaction> Transactions { get; set; } = null!;
-        public DbSet<UserBook> Borrows { get; set; } = null!;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -40,25 +35,28 @@ namespace MyEBookLibrary.Data
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
+            // UserBook configuration
             modelBuilder.Entity<UserBook>(entity =>
-         {
-             entity.ToTable("UserBooks");  // מגדיר את שם הטבלה
+            {
+                entity.ToTable("UserBooks");
 
-             entity.HasOne(ub => ub.User)
-                 .WithMany(u => u.Books)
-                 .HasForeignKey(ub => ub.UserId)
-                 .IsRequired()
-                 .OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(ub => ub.User)
+                    .WithMany(u => u.Books)
+                    .HasForeignKey(ub => ub.UserId)
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.Cascade);
 
-             entity.HasOne(ub => ub.Book)
-                 .WithMany(b => b.UserBooks)
-                 .HasForeignKey(ub => ub.BookId)
-                 .IsRequired()
-                 .OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(ub => ub.Book)
+                    .WithMany(b => b.UserBooks)
+                    .HasForeignKey(ub => ub.BookId)
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.Cascade);
 
-
-           
-         });
+                // הוספת קונפיגורציית BuyPrice כאן
+                entity.Property(e => e.BuyPrice)
+                    .HasColumnType("decimal(18, 2)")
+                    .HasPrecision(18, 2);
+            });
 
             // WaitingList relationships
             modelBuilder.Entity<WaitingListItem>(entity =>

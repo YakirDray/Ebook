@@ -31,14 +31,14 @@ namespace MyEBookLibrary.Models
         public bool IsActive => !IsReturned && !IsOverdue;
 
         // מספר ימים שנותרו להחזרה
-        public int DaysRemaining => IsReturned ? 
-            0 : 
+        public int DaysRemaining => IsReturned ?
+            0 :
             (int)(DueDate - DateTime.UtcNow).TotalDays;
 
         // האם צריך לשלוח תזכורת (5 ימים לפני מועד ההחזרה)
-        public bool NeedsReminder => IsActive && 
-            !ReminderSent && 
-            DaysRemaining <= 5 && 
+        public bool NeedsReminder => IsActive &&
+            !ReminderSent &&
+            DaysRemaining <= 5 &&
             DaysRemaining > 0;
 
         [ForeignKey("UserId")]

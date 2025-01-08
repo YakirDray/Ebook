@@ -7,22 +7,14 @@ using MyEBookLibrary.Services.Interfaces;
 
 namespace MyEBookLibrary.Services
 {
-    public class EmailNotificationService : IEmailNotificationService
+    public class EmailNotificationService(
+        IConfiguration configuration,
+        ILogger<EmailNotificationService> logger,
+        ApplicationDbContext context) : IEmailNotificationService
     {
-        private readonly IConfiguration _configuration;
-        private readonly ILogger<EmailNotificationService> _logger;
-        private readonly ApplicationDbContext _context;
-
-        public EmailNotificationService(
-            IConfiguration configuration,
-            ILogger<EmailNotificationService> logger,
-            ApplicationDbContext context)
-
-        {
-            _configuration = configuration;
-            _logger = logger;
-            _context = context;
-        }
+        private readonly IConfiguration _configuration = configuration;
+        private readonly ILogger<EmailNotificationService> _logger = logger;
+        private readonly ApplicationDbContext _context = context;
 
         public async Task SendEmailAsync(string to, string subject, string body)
         {

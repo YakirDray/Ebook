@@ -1,5 +1,4 @@
 // Models/Book.cs
-using System.ComponentModel.DataAnnotations;
 
 namespace MyEBookLibrary.Models
 {
@@ -26,13 +25,13 @@ namespace MyEBookLibrary.Models
         public decimal BorrowPrice { get; set; }
         public bool IsBorrowable { get; set; }
         public int AvailableCopies { get; set; }
-        public List<BookFormat> AvailableFormats { get; set; } = new();
+        public List<BookFormat> AvailableFormats { get; set; } = [];
         public string AgeRestriction { get; set; } = string.Empty;
         public decimal? OriginalPrice { get; set; }
         public DateTime? DiscountEndDate { get; set; }
-        public List<BookReview> Reviews { get; set; } = new();
-        public List<UserBook> UserBooks { get; set; } = new List<UserBook>();
-        public List<WaitingListItem> WaitingList { get; set; } = new List<WaitingListItem>();
+        public List<BookReview> Reviews { get; set; } = [];
+        public List<UserBook> UserBooks { get; set; } = [];
+        public List<WaitingListItem> WaitingList { get; set; } = [];
         public decimal DiscountedPrice { get; private set; }
         public bool IsAvailable { get; internal set; }
 
@@ -40,6 +39,6 @@ namespace MyEBookLibrary.Models
         {
             return (DiscountEndDate.HasValue && DiscountEndDate.Value > DateTime.Now) ? DiscountedPrice : BuyPrice;
         }
-       
+
     }
 }

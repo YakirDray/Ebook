@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using static MyEBookLibrary.Models.Book;
 
 namespace MyEBookLibrary.Models
 {
@@ -25,8 +24,7 @@ namespace MyEBookLibrary.Models
         public required User Reviewer { get; set; } // התאמת המפתח הזר
 
         public virtual Book Book { get; set; } = null!;
-       
-    }
 
+    }
 
 }

@@ -6,16 +6,10 @@ using Stripe;
 
 namespace MyEBookLibrary.Services
 {
-    public class CartService : ICartService
+    public class CartService(ApplicationDbContext context, ILogger<CartService> logger) : ICartService
     {
-        private readonly ApplicationDbContext _context;
-        private readonly ILogger<CartService>? _logger;
-
-        public CartService(ApplicationDbContext context, ILogger<CartService> logger)
-        {
-            _context = context;
-            _logger = logger;
-        }
+        private readonly ApplicationDbContext _context = context;
+        private readonly ILogger<CartService>? _logger = logger;
 
         public async Task<ShoppingCart> GetOrCreateCartAsync(int userId)
         {
@@ -32,7 +26,7 @@ namespace MyEBookLibrary.Services
                     UserId = userId,
                     Status = CartStatus.Active,
                     CreatedAt = DateTime.UtcNow,
-                    Items = new List<CartItem>()
+                    Items = []
                 };
                 _context.ShoppingCarts.Add(cart);
                 await _context.SaveChangesAsync();
@@ -333,6 +327,6 @@ namespace MyEBookLibrary.Services
             throw new NotImplementedException();
         }
 
-   
+
     }
 }

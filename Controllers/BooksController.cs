@@ -9,27 +9,17 @@ using MyEBookLibrary.ViewModels;
 
 namespace MyEBookLibrary.Controllers
 {
-    public class BooksController : Controller
+    public class BooksController(
+        ApplicationDbContext context,
+        ILibraryService libraryService,
+        ICartService cartService,
+
+        UserManager<User> userManager) : Controller
     {
-        private readonly ApplicationDbContext _context;
-        private readonly ILibraryService _libraryService;
-        private readonly UserManager<User> _userManager;
-        private readonly ICartService _cartService;
-
-        public BooksController(
-            ApplicationDbContext context,
-            ILibraryService libraryService,
-            ICartService cartService,
-
-            UserManager<User> userManager)
-
-        {
-            _context = context;
-            _libraryService = libraryService;
-            _cartService = cartService;
-
-            _userManager = userManager;
-        }
+        private readonly ApplicationDbContext _context = context;
+        private readonly ILibraryService _libraryService = libraryService;
+        private readonly UserManager<User> _userManager = userManager;
+        private readonly ICartService _cartService = cartService;
 
         public async Task<IActionResult> Index(string searchString, string genre)
         {
@@ -103,7 +93,7 @@ namespace MyEBookLibrary.Controllers
             var result = await _cartService.AddToCartAsync(userId, id, true, format);
 
             if (result)
-                return RedirectToAction("Checkout", "Cart");
+                return RedirectToAction("Index", "Cart");
 
             TempData["Error"] = "לא ניתן להוסיף את הספר לעגלה";
             return RedirectToAction("Details", new { id });
@@ -117,11 +107,11 @@ namespace MyEBookLibrary.Controllers
             if (!User.Identity!.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
-            var userId =int.Parse(_userManager.GetUserId(User)!);
+            var userId = int.Parse(_userManager.GetUserId(User)!);
             var result = await _cartService.AddToCartAsync(userId!, id, false, format);
 
             if (result)
-                return RedirectToAction("Checkout", "Cart");
+                return RedirectToAction("Index", "Cart");
 
             TempData["Error"] = "לא ניתן להוסיף את הספר לעגלה";
             return RedirectToAction("Details", new { id });

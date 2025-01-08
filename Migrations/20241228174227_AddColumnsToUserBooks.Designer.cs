@@ -12,8 +12,8 @@ using MyEBookLibrary.Data;
 namespace MyEBookLibrary.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241226235629_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241228174227_AddColumnsToUserBooks")]
+    partial class AddColumnsToUserBooks
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -447,6 +447,10 @@ namespace MyEBookLibrary.Migrations
 
                     b.Property<DateTime?>("BorrowDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<decimal>("BuyPrice")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<int>("Format")
                         .HasColumnType("int");

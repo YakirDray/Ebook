@@ -1,5 +1,7 @@
 // Models/UserBook.cs
 
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace MyEBookLibrary.Models
 {
     public class UserBook
@@ -11,12 +13,20 @@ namespace MyEBookLibrary.Models
         public bool IsPurchased { get; set; }
         public DateTime? BorrowDate { get; set; }
         public DateTime? ReturnDate { get; set; }
+
         public BookFormat Format { get; set; }
         public bool IsReturned { get; set; }
 
+        [NotMapped]
+        public DateTime DueDate => (BorrowDate ?? DateTime.UtcNow).AddDays(30);
+
+        [NotMapped]
+        public bool IsLate => !IsReturned && DateTime.UtcNow > DueDate;
         public string? UserName => User?.UserName;
         public virtual User User { get; set; } = null!;
         public virtual Book Book { get; set; } = null!;
+
+        public decimal BuyPrice { get; set; }
     }
     public class Transaction
     {
