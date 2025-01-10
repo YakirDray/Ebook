@@ -286,3 +286,5 @@ C:\React native projects\Ebook\obj\Debug\net8.0\MyEBookLibrary.genruntimeconfig.
 C:\React native projects\Ebook\obj\Debug\net8.0\ref\MyEBookLibrary.dll
 C:\React native projects\Ebook\bin\Debug\net8.0\Newtonsoft.Json.dll
 C:\React native projects\Ebook\bin\Debug\net8.0\Stripe.net.dll
+C:\React native projects\Ebook\bin\Debug\net8.0\ebook\users.json
+C:\React native projects\Ebook\bin\Debug\net8.0\Models\books.json
