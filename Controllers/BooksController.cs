@@ -53,7 +53,40 @@ namespace MyEBookLibrary.Controllers
 
             return View(viewModel);
         }
+        public async Task<IActionResult> Popular(int page = 1)
+        {
+            const int PageSize = 12;
 
+            // First get all books with their related data
+            var query = _context.Books
+                .Include(b => b.Reviews)
+                .Include(b => b.UserBooks)
+                .AsQueryable();
+
+            // Get total count for pagination
+            var totalBooks = await query.CountAsync();
+
+            // Then apply ordering and pagination
+            var popularBooks = await query
+                .OrderByDescending(b => b.Reviews.Any() ? b.Reviews.Average(r => r.Rating) : 0)
+                .ThenByDescending(b => b.UserBooks.Count(ub => ub.IsBorrowed || ub.IsPurchased))
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .ToListAsync();
+
+            var totalPages = (int)Math.Ceiling(totalBooks / (double)PageSize);
+
+            var viewModel = new PopularBooksViewModel
+            {
+                Books = popularBooks,
+                CurrentPage = page,
+                TotalPages = totalPages,
+                HasPreviousPage = page > 1,
+                HasNextPage = page < totalPages
+            };
+
+            return View(viewModel);
+        }
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)

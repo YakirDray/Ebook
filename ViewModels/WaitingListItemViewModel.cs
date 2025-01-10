@@ -92,6 +92,8 @@ namespace MyEBookLibrary.ViewModels
         public bool CanBeNotified => !IsNotified && IsNextInLine;
         public bool HasValidEmail => !string.IsNullOrEmpty(Email);
 
+        public int BookId { get; internal set; }
+
         private string GetStatus()
         {
             if (IsNotified)
@@ -114,12 +116,10 @@ namespace MyEBookLibrary.ViewModels
             return "text-secondary";
         }
     }
-
-    public class WaitingListFilterViewModel
+ public class WaitingListFilterViewModel
     {
-        public int? BookId { get; set; }
-        public string? SearchTerm { get; set; }
-        public BookFormat? Format { get; set; }
+        public string? BookTitle { get; set; }
+        public DateTime? JoinDate { get; set; }
         public bool? IsNotified { get; set; }
         public DateTime? FromDate { get; set; }
         public DateTime? ToDate { get; set; }
@@ -128,7 +128,6 @@ namespace MyEBookLibrary.ViewModels
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;
     }
-
     public class WaitingListPageViewModel
     {
         public List<WaitingListManagementViewModel> Items { get; set; } = [];
