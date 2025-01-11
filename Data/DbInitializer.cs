@@ -84,7 +84,7 @@ namespace MyEBookLibrary.Data
         {
             return new List<Book>
             {
-                  new Book
+            new Book
             {
                 Title = "הארי פוטר ואבן החכמים",
                 Author = "ג'יי. קיי. רולינג",
