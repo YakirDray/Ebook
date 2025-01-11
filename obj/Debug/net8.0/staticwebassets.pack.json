@@ -1,355 +1,355 @@
 {
   "Files": [
     {
-      "Id": "C:\\React native projects\\Ebook\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\MyEBookLibrary.bundle.scp.css",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\MyEBookLibrary.bundle.scp.css",
       "PackagePath": "staticwebassets\\MyEBookLibrary.bundle.scp.css"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\css\\books.css",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\css\\books.css",
       "PackagePath": "staticwebassets\\css\\books.css"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\css\\home.css",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\css\\home.css",
       "PackagePath": "staticwebassets\\css\\home.css"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\css\\layout.css",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\css\\layout.css",
       "PackagePath": "staticwebassets\\css\\layout.css"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\css\\site.css",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\css\\styles.css",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\css\\styles.css",
       "PackagePath": "staticwebassets\\css\\styles.css"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\favicon.ico",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\images\\books\\01052ef3-ff4f-4b61-9121-abf46675f0dc.jpeg",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\images\\books\\01052ef3-ff4f-4b61-9121-abf46675f0dc.jpeg",
       "PackagePath": "staticwebassets\\images\\books\\01052ef3-ff4f-4b61-9121-abf46675f0dc.jpeg"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\images\\books\\0cb852bc-6dde-469e-877c-374dc5c3b3c7.jpeg",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\images\\books\\0cb852bc-6dde-469e-877c-374dc5c3b3c7.jpeg",
       "PackagePath": "staticwebassets\\images\\books\\0cb852bc-6dde-469e-877c-374dc5c3b3c7.jpeg"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\images\\books\\0e7c1e08-724b-40d9-83df-e24a90dfee8a.jpg",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\images\\books\\0e7c1e08-724b-40d9-83df-e24a90dfee8a.jpg",
       "PackagePath": "staticwebassets\\images\\books\\0e7c1e08-724b-40d9-83df-e24a90dfee8a.jpg"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\images\\books\\175610ef-719d-4c50-bdf2-794345a020ed.jpeg",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\images\\books\\175610ef-719d-4c50-bdf2-794345a020ed.jpeg",
       "PackagePath": "staticwebassets\\images\\books\\175610ef-719d-4c50-bdf2-794345a020ed.jpeg"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\images\\books\\28335735-fe70-4291-b4a7-3aa90a5cab09.jpg",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\images\\books\\28335735-fe70-4291-b4a7-3aa90a5cab09.jpg",
       "PackagePath": "staticwebassets\\images\\books\\28335735-fe70-4291-b4a7-3aa90a5cab09.jpg"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\images\\books\\2aec1873-582f-4b31-841b-45c2c82e55ee.jpeg",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\images\\books\\2aec1873-582f-4b31-841b-45c2c82e55ee.jpeg",
       "PackagePath": "staticwebassets\\images\\books\\2aec1873-582f-4b31-841b-45c2c82e55ee.jpeg"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\images\\books\\30d4118d-8e58-410c-beba-2e98f6f39c23.jpg",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\images\\books\\30d4118d-8e58-410c-beba-2e98f6f39c23.jpg",
       "PackagePath": "staticwebassets\\images\\books\\30d4118d-8e58-410c-beba-2e98f6f39c23.jpg"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\images\\books\\4d6bc8d9-0b3e-483b-ac50-37ea1fda0c93.jpg",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\images\\books\\4d6bc8d9-0b3e-483b-ac50-37ea1fda0c93.jpg",
       "PackagePath": "staticwebassets\\images\\books\\4d6bc8d9-0b3e-483b-ac50-37ea1fda0c93.jpg"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\images\\books\\592c1fc5-9853-42ea-8127-f64cd13a03af.jpg",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\images\\books\\592c1fc5-9853-42ea-8127-f64cd13a03af.jpg",
       "PackagePath": "staticwebassets\\images\\books\\592c1fc5-9853-42ea-8127-f64cd13a03af.jpg"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\images\\books\\597d850e-82c9-4df4-8daa-a5ef69000f72.jpg",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\images\\books\\597d850e-82c9-4df4-8daa-a5ef69000f72.jpg",
       "PackagePath": "staticwebassets\\images\\books\\597d850e-82c9-4df4-8daa-a5ef69000f72.jpg"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\images\\books\\62065767-7070-4165-8b9e-e9b4b76461e7.jpeg",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\images\\books\\62065767-7070-4165-8b9e-e9b4b76461e7.jpeg",
       "PackagePath": "staticwebassets\\images\\books\\62065767-7070-4165-8b9e-e9b4b76461e7.jpeg"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\images\\books\\67291d7f-0ab1-4892-872f-46275cd83c5a.png",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\images\\books\\67291d7f-0ab1-4892-872f-46275cd83c5a.png",
       "PackagePath": "staticwebassets\\images\\books\\67291d7f-0ab1-4892-872f-46275cd83c5a.png"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\images\\books\\69f6a047-5a53-453c-89a3-04218b9353fe.jpg",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\images\\books\\69f6a047-5a53-453c-89a3-04218b9353fe.jpg",
       "PackagePath": "staticwebassets\\images\\books\\69f6a047-5a53-453c-89a3-04218b9353fe.jpg"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\images\\books\\7fdf43fb-2c73-4129-be4f-bc427304615c.webp",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\images\\books\\7fdf43fb-2c73-4129-be4f-bc427304615c.webp",
       "PackagePath": "staticwebassets\\images\\books\\7fdf43fb-2c73-4129-be4f-bc427304615c.webp"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\images\\books\\8db64647-0a07-4ce4-b01d-dd3f29c364b0.jpg",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\images\\books\\8db64647-0a07-4ce4-b01d-dd3f29c364b0.jpg",
       "PackagePath": "staticwebassets\\images\\books\\8db64647-0a07-4ce4-b01d-dd3f29c364b0.jpg"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\images\\books\\9c354729-7cb2-43fb-87fa-e499c47cbd7e.jpeg",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\images\\books\\9c354729-7cb2-43fb-87fa-e499c47cbd7e.jpeg",
       "PackagePath": "staticwebassets\\images\\books\\9c354729-7cb2-43fb-87fa-e499c47cbd7e.jpeg"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\images\\books\\9d20382f-2f45-48f6-84b5-20ebbfd9fac1.jpg",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\images\\books\\9d20382f-2f45-48f6-84b5-20ebbfd9fac1.jpg",
       "PackagePath": "staticwebassets\\images\\books\\9d20382f-2f45-48f6-84b5-20ebbfd9fac1.jpg"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\images\\books\\d6935431-5a4a-4f79-9295-814f18f69378.jpeg",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\images\\books\\d6935431-5a4a-4f79-9295-814f18f69378.jpeg",
       "PackagePath": "staticwebassets\\images\\books\\d6935431-5a4a-4f79-9295-814f18f69378.jpeg"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\images\\books\\e3e9ca28-9354-4c7f-b377-40be37f28ac4.jpg",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\images\\books\\e3e9ca28-9354-4c7f-b377-40be37f28ac4.jpg",
       "PackagePath": "staticwebassets\\images\\books\\e3e9ca28-9354-4c7f-b377-40be37f28ac4.jpg"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\images\\books\\f5c39077-f343-4193-9f45-4f13dc8beb49.jpeg",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\images\\books\\f5c39077-f343-4193-9f45-4f13dc8beb49.jpeg",
       "PackagePath": "staticwebassets\\images\\books\\f5c39077-f343-4193-9f45-4f13dc8beb49.jpeg"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\images\\books\\feb72380-3d5b-4465-a97a-ee7020f71b97.jpg",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\images\\books\\feb72380-3d5b-4465-a97a-ee7020f71b97.jpg",
       "PackagePath": "staticwebassets\\images\\books\\feb72380-3d5b-4465-a97a-ee7020f71b97.jpg"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\js\\cart.js",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\js\\cart.js",
       "PackagePath": "staticwebassets\\js\\cart.js"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\js\\site.js",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\js\\validation.js",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\js\\validation.js",
       "PackagePath": "staticwebassets\\js\\validation.js"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\LICENSE",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\LICENSE",
       "PackagePath": "staticwebassets\\lib\\bootstrap"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css.map"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js.map"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
       "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\LICENSE.md"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.js"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.min.js"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.js"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.min.js"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\jquery\\LICENSE.txt",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\jquery\\LICENSE.txt",
       "PackagePath": "staticwebassets\\lib\\jquery\\LICENSE.txt"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\jquery\\dist\\jquery.js",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\jquery\\dist\\jquery.js",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.js"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.js"
     },
     {
-      "Id": "C:\\React native projects\\Ebook\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
+      "Id": "C:\\Users\\טופי\\Desktop\\final-book-project\\Ebook\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
     },
     {
